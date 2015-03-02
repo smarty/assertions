@@ -7,7 +7,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/smartystreets/assertions/oglematchers"
+	"github.com/smartystreets/assertions/internal/oglematchers"
 )
 
 // default acceptable delta for ShouldAlmostEqual
