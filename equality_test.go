@@ -43,7 +43,7 @@ func TestShouldNotEqual(t *testing.T) {
 	fail(t, so(true, ShouldNotEqual, true), "Expected 'true' to NOT equal 'true' (but it did)!")
 
 	pass(t, so("hi", ShouldNotEqual, "bye"))
-	fail(t, so("hi", ShouldNotEqual, "hi"), "Expected 'hi' to NOT equal 'hi' (but it did)!")
+	fail(t, so("hi", ShouldNotEqual, "hi"), "Expected '\"hi\"' to NOT equal '\"hi\"' (but it did)!")
 
 	pass(t, so(&Thing1{"hi"}, ShouldNotEqual, &Thing1{"hi"}))
 	pass(t, so(Thing1{"hi"}, ShouldNotEqual, Thing1{"hi"}))

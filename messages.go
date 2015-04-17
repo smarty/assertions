@@ -2,7 +2,7 @@ package assertions
 
 const ( // equality
 	shouldHaveBeenEqual             = "Expected: '%#v'\nActual:   '%#v'\n(Should be equal)"
-	shouldNotHaveBeenEqual          = "Expected     '%v'\nto NOT equal '%v'\n(but it did)!"
+	shouldNotHaveBeenEqual          = "Expected     '%#v'\nto NOT equal '%#v'\n(but it did)!"
 	shouldHaveBeenAlmostEqual       = "Expected '%v' to almost equal '%v' (but it didn't)!"
 	shouldHaveNotBeenAlmostEqual    = "Expected '%v' to NOT almost equal '%v' (but it did)!"
 	shouldHaveResembled             = "Expected: '%#v'\nActual:   '%#v'\n(Should resemble)!"
