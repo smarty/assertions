@@ -20,15 +20,15 @@ func TestShouldEqual(t *testing.T) {
 	fail(t, so(true, ShouldEqual, false), "false|true|Expected: 'false' Actual: 'true' (Should be equal)")
 
 	pass(t, so("hi", ShouldEqual, "hi"))
-	fail(t, so("hi", ShouldEqual, "bye"), "bye|hi|Expected: 'bye' Actual: 'hi' (Should be equal)")
+	fail(t, so("hi", ShouldEqual, "bye"), "bye|hi|Expected: '\"bye\"' Actual: '\"hi\"' (Should be equal)")
 
 	pass(t, so(42, ShouldEqual, uint(42)))
 
-	fail(t, so(Thing1{"hi"}, ShouldEqual, Thing1{}), "{}|{hi}|Expected: '{}' Actual: '{hi}' (Should be equal)")
-	fail(t, so(Thing1{"hi"}, ShouldEqual, Thing1{"hi"}), "{hi}|{hi}|Expected: '{hi}' Actual: '{hi}' (Should be equal)")
-	fail(t, so(&Thing1{"hi"}, ShouldEqual, &Thing1{"hi"}), "&{hi}|&{hi}|Expected: '&{hi}' Actual: '&{hi}' (Should be equal)")
+	fail(t, so(Thing1{"hi"}, ShouldEqual, Thing1{}), "{}|{hi}|Expected: 'assertions.Thing1{a:\"\"}' Actual: 'assertions.Thing1{a:\"hi\"}' (Should be equal)")
+	fail(t, so(Thing1{"hi"}, ShouldEqual, Thing1{"hi"}), "{hi}|{hi}|Expected: 'assertions.Thing1{a:\"hi\"}' Actual: 'assertions.Thing1{a:\"hi\"}' (Should be equal)")
+	fail(t, so(&Thing1{"hi"}, ShouldEqual, &Thing1{"hi"}), "&{hi}|&{hi}|Expected: '&assertions.Thing1{a:\"hi\"}' Actual: '&assertions.Thing1{a:\"hi\"}' (Should be equal)")
 
-	fail(t, so(Thing1{}, ShouldEqual, Thing2{}), "{}|{}|Expected: '{}' Actual: '{}' (Should be equal)")
+	fail(t, so(Thing1{}, ShouldEqual, Thing2{}), "{}|{}|Expected: 'assertions.Thing2{a:\"\"}' Actual: 'assertions.Thing1{a:\"\"}' (Should be equal)")
 }
 
 func TestShouldNotEqual(t *testing.T) {
