@@ -13,6 +13,10 @@ clone:
 	git clone https://github.com/jacobsa/oglemock.git
 	git clone https://github.com/jacobsa/oglematchers.git
 	git clone https://github.com/jacobsa/reqtrace.git
+	rm -rf ogletest/.git
+	rm -rf oglemock/.git
+	rm -rf oglematchers/.git
+	rm -rf reqtrace/.git
 
 rewrite:
 	grep -rl --exclude Makefile 'github.com/jacobsa' . | xargs sed -i '' 's#github.com/jacobsa#github.com/smartystreets/assertions/internal#g'
