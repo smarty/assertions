@@ -30,17 +30,19 @@ type testingT interface {
 
 type Assertion struct{ t testingT }
 
+// New swallows the *testing.T struct and prints failed assertions using t.Error.
+// Example: assertions.New(t).So(1, should.Equal, 1)
 func New(t testingT) *Assertion {
 	return &Assertion{t}
 }
 
+// So calls the standalone So function and additionally, calls t.Error in failure scenarios.
 func (this *Assertion) So(actual interface{}, assert assertion, expected ...interface{}) bool {
-	if result := so(actual, assert, expected...); len(result) > 0 {
+	ok, result := So(actual, assert, expected...)
+	if !ok {
 		this.t.Error("\n" + result)
-		return false
-	} else {
-		return true
 	}
+	return ok
 }
 
 // So is a convenience function (as opposed to an inconvenience function?)
