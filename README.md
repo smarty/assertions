@@ -9,27 +9,6 @@ can also be used in traditional Go test functions and even in applicaitons.
 
 ## Usage
 
-#### func  So
-
-```go
-func So(actual interface{}, assert assertion, expected ...interface{}) (bool, string)
-```
-So is a convenience function for running assertions on arbitrary arguments in
-any context, be it for testing or even application logging. It allows you to
-perform assertion-like behavior (and get nicely formatted messages detailing
-discrepancies) but without the program blowing up or panicking. All that is
-required is to import this package and call `So` with one of the assertions
-exported by this package as the second parameter. The first return parameter is
-a boolean indicating if the assertion was true. The second return parameter is
-the well-formatted message showing why an assertion was incorrect, or blank if
-the assertion was correct.
-
-Example:
-
-    if ok, message := So(x, ShouldBeGreaterThan, y); !ok {
-         log.Println(message)
-    }
-
 #### func  GoConveyMode
 
 ```go
@@ -471,6 +450,51 @@ func ShouldStartWith(actual interface{}, expected ...interface{}) string
 ```
 ShouldStartWith receives exactly 2 string parameters and ensures that the first
 starts with the second.
+
+#### func  So
+
+```go
+func So(actual interface{}, assert assertion, expected ...interface{}) (bool, string)
+```
+So is a convenience function (as opposed to an inconvenience function?) for
+running assertions on arbitrary arguments in any context, be it for testing or
+even application logging. It allows you to perform assertion-like behavior (and
+get nicely formatted messages detailing discrepancies) but without the program
+blowing up or panicking. All that is required is to import this package and call
+`So` with one of the assertions exported by this package as the second
+parameter. The first return parameter is a boolean indicating if the assertion
+was true. The second return parameter is the well-formatted message showing why
+an assertion was incorrect, or blank if the assertion was correct.
+
+Example:
+
+    if ok, message := So(x, ShouldBeGreaterThan, y); !ok {
+         log.Println(message)
+    }
+
+#### type Assertion
+
+```go
+type Assertion struct {
+}
+```
+
+
+#### func  New
+
+```go
+func New(t testingT) *Assertion
+```
+New swallows the *testing.T struct and prints failed assertions using t.Error.
+Example: assertions.New(t).So(1, should.Equal, 1)
+
+#### func (*Assertion) So
+
+```go
+func (this *Assertion) So(actual interface{}, assert assertion, expected ...interface{}) bool
+```
+So calls the standalone So function and additionally, calls t.Error in failure
+scenarios.
 
 #### type Serializer
 
