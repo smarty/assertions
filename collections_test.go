@@ -6,6 +6,28 @@ import (
 	"time"
 )
 
+func TestShouldContainKey(t *testing.T) {
+	fail(t, so(map[int]int{}, ShouldContainKey), "This assertion requires exactly 1 comparison values (you provided 0).")
+	fail(t, so(map[int]int{}, ShouldContainKey, 1, 2, 3), "This assertion requires exactly 1 comparison values (you provided 3).")
+
+	fail(t, so(Thing1{}, ShouldContainKey, 1), "You must provide a valid map type (was assertions.Thing1)!")
+	fail(t, so(nil, ShouldContainKey, 1), "You must provide a valid map type (was <nil>)!")
+	fail(t, so(map[int]int{1: 41}, ShouldContainKey, 2), "Expected the map[int]int to contain the key: [2] (but it didn't)!")
+
+	pass(t, so(map[int]int{1: 41}, ShouldContainKey, 1))
+	pass(t, so(map[int]int{1: 41, 2: 42, 3: 43}, ShouldContainKey, 2))
+}
+
+func TestShouldNotContainKey(t *testing.T) {
+	fail(t, so(map[int]int{}, ShouldNotContainKey), "This assertion requires exactly 1 comparison values (you provided 0).")
+	fail(t, so(map[int]int{}, ShouldNotContainKey, 1, 2, 3), "This assertion requires exactly 1 comparison values (you provided 3).")
+
+	fail(t, so(Thing1{}, ShouldNotContainKey, 1), "You must provide a valid map type (was assertions.Thing1)!")
+	fail(t, so(nil, ShouldNotContainKey, 1), "You must provide a valid map type (was <nil>)!")
+	fail(t, so(map[int]int{1: 41}, ShouldNotContainKey, 1), "Expected the map[int]int NOT to contain the key: [1] (but it did)!")
+	pass(t, so(map[int]int{1: 41}, ShouldNotContainKey, 2))
+}
+
 func TestShouldContain(t *testing.T) {
 	fail(t, so([]int{}, ShouldContain), "This assertion requires exactly 1 comparison values (you provided 0).")
 	fail(t, so([]int{}, ShouldContain, 1, 2, 3), "This assertion requires exactly 1 comparison values (you provided 3).")

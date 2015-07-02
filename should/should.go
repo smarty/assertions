@@ -28,12 +28,14 @@ var (
 	BeBetweenOrEqual       = assertions.ShouldBeBetweenOrEqual
 	NotBeBetweenOrEqual    = assertions.ShouldNotBeBetweenOrEqual
 
-	Contain    = assertions.ShouldContain
-	NotContain = assertions.ShouldNotContain
-	BeIn       = assertions.ShouldBeIn
-	NotBeIn    = assertions.ShouldNotBeIn
-	BeEmpty    = assertions.ShouldBeEmpty
-	NotBeEmpty = assertions.ShouldNotBeEmpty
+	Contain       = assertions.ShouldContain
+	NotContain    = assertions.ShouldNotContain
+	ContainKey    = assertions.ShouldContainKey
+	NotContainKey = assertions.ShouldNotContainKey
+	BeIn          = assertions.ShouldBeIn
+	NotBeIn       = assertions.ShouldNotBeIn
+	BeEmpty       = assertions.ShouldBeEmpty
+	NotBeEmpty    = assertions.ShouldNotBeEmpty
 
 	StartWith           = assertions.ShouldStartWith
 	NotStartWith        = assertions.ShouldNotStartWith

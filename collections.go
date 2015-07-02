@@ -42,6 +42,61 @@ func ShouldNotContain(actual interface{}, expected ...interface{}) string {
 	return fmt.Sprintf(shouldNotHaveContained, typeName, expected[0])
 }
 
+// ShouldContainKey receives exactly two parameters. The first is a map and the
+// second is a proposed key. Keys are compared with a simple '=='.
+func ShouldContainKey(actual interface{}, expected ...interface{}) string {
+	if fail := need(1, expected); fail != success {
+		return fail
+	}
+
+	keys, isMap := mapKeys(actual)
+	if !isMap {
+		return fmt.Sprintf(shouldHaveBeenAValidMap, reflect.TypeOf(actual))
+	}
+
+	if !keyFound(keys, expected[0]) {
+		return fmt.Sprintf(shouldHaveContainedKey, reflect.TypeOf(actual), expected)
+	}
+
+	return ""
+}
+
+// ShouldNotContainKey receives exactly two parameters. The first is a map and the
+// second is a proposed absent key. Keys are compared with a simple '=='.
+func ShouldNotContainKey(actual interface{}, expected ...interface{}) string {
+	if fail := need(1, expected); fail != success {
+		return fail
+	}
+
+	keys, isMap := mapKeys(actual)
+	if !isMap {
+		return fmt.Sprintf(shouldHaveBeenAValidMap, reflect.TypeOf(actual))
+	}
+
+	if keyFound(keys, expected[0]) {
+		return fmt.Sprintf(shouldNotHaveContainedKey, reflect.TypeOf(actual), expected)
+	}
+
+	return ""
+}
+
+func mapKeys(m interface{}) ([]reflect.Value, bool) {
+	value := reflect.ValueOf(m)
+	if value.Kind() != reflect.Map {
+		return nil, false
+	}
+	return value.MapKeys(), true
+}
+func keyFound(keys []reflect.Value, expectedKey interface{}) bool {
+	found := false
+	for _, key := range keys {
+		if key.Interface() == expectedKey {
+			found = true
+		}
+	}
+	return found
+}
+
 // ShouldBeIn receives at least 2 parameters. The first is a proposed member of the collection
 // that is passed in either as the second parameter, or of the collection that is comprised
 // of all the remaining parameters. This assertion ensures that the proposed member is in
