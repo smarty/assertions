@@ -152,6 +152,14 @@ func ShouldContain(actual interface{}, expected ...interface{}) string
 ShouldContain receives exactly two parameters. The first is a slice and the
 second is a proposed member. Membership is determined using ShouldEqual.
 
+#### func  ShouldContainKey
+
+```go
+func ShouldContainKey(actual interface{}, expected ...interface{}) string
+```
+ShouldContainKey receives exactly two parameters. The first is a map and the
+second is a proposed key. Keys are compared with a simple '=='.
+
 #### func  ShouldContainSubstring
 
 ```go
@@ -315,6 +323,14 @@ func ShouldNotContain(actual interface{}, expected ...interface{}) string
 ```
 ShouldNotContain receives exactly two parameters. The first is a slice and the
 second is a proposed member. Membership is determinied using ShouldEqual.
+
+#### func  ShouldNotContainKey
+
+```go
+func ShouldNotContainKey(actual interface{}, expected ...interface{}) string
+```
+ShouldNotContainKey receives exactly two parameters. The first is a map and the
+second is a proposed absent key. Keys are compared with a simple '=='.
 
 #### func  ShouldNotContainSubstring
 
