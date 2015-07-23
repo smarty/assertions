@@ -7,3 +7,5 @@ go:
 
 install:
   - go get golang.org/x/tools/cover
+
+sudo: false
