@@ -5,6 +5,11 @@
 // applicaitons.
 package assertions
 
+import (
+	"fmt"
+	"runtime"
+)
+
 // By default we use a no-op serializer. The actual Serializer provides a JSON
 // representation of failure results on selected assertions so the goconvey
 // web UI can display a convenient diff.
@@ -40,7 +45,8 @@ func New(t testingT) *Assertion {
 func (this *Assertion) So(actual interface{}, assert assertion, expected ...interface{}) bool {
 	ok, result := So(actual, assert, expected...)
 	if !ok {
-		this.t.Error("\n" + result)
+		_, file, line, _ := runtime.Caller(1)
+		this.t.Error(fmt.Sprintf("\n%s:%d\n%s", file, line, result))
 	}
 	return ok
 }
