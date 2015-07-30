@@ -33,18 +33,25 @@ type testingT interface {
 	Error(args ...interface{})
 }
 
-type Assertion struct{ t testingT }
+type Assertion struct {
+	t      testingT
+	failed bool
+}
 
 // New swallows the *testing.T struct and prints failed assertions using t.Error.
 // Example: assertions.New(t).So(1, should.Equal, 1)
 func New(t testingT) *Assertion {
-	return &Assertion{t}
+	return &Assertion{t: t}
+}
+func (this *Assertion) Failed() bool {
+	return this.failed
 }
 
 // So calls the standalone So function and additionally, calls t.Error in failure scenarios.
 func (this *Assertion) So(actual interface{}, assert assertion, expected ...interface{}) bool {
 	ok, result := So(actual, assert, expected...)
 	if !ok {
+		this.failed = true
 		_, file, line, _ := runtime.Caller(1)
 		this.t.Error(fmt.Sprintf("\n%s:%d\n%s", file, line, result))
 	}
