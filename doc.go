@@ -43,6 +43,8 @@ type Assertion struct {
 func New(t testingT) *Assertion {
 	return &Assertion{t: t}
 }
+
+// Failed reports whether any calls to So (on this Assertion instance) have failed.
 func (this *Assertion) Failed() bool {
 	return this.failed
 }
