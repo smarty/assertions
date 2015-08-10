@@ -504,6 +504,13 @@ func New(t testingT) *Assertion
 New swallows the *testing.T struct and prints failed assertions using t.Error.
 Example: assertions.New(t).So(1, should.Equal, 1)
 
+#### func (*Assertion) Failed
+
+```go
+func (this *Assertion) Failed() bool
+```
+Failed reports whether any calls to So (on this Assertion instance) have failed.
+
 #### func (*Assertion) So
 
 ```go
