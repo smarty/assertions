@@ -1,4 +1,6 @@
 # assertions
+[![Build Status](https://travis-ci.org/smartystreets/assertions.png)](https://travis-ci.org/smartystreets/assertions)
+
 --
     import "github.com/smartystreets/assertions"
 
