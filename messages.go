@@ -3,10 +3,11 @@ package assertions
 const ( // equality
 	shouldHaveBeenEqual             = "Expected: '%v'\nActual:   '%v'\n(Should be equal)"
 	shouldNotHaveBeenEqual          = "Expected     '%v'\nto NOT equal '%v'\n(but it did)!"
+	shouldHaveBeenEqualTypeMismatch = "Expected: '%v' (%T)\nActual:   '%v' (%T) (Should be equal, type mismatch)"
 	shouldHaveBeenAlmostEqual       = "Expected '%v' to almost equal '%v' (but it didn't)!"
 	shouldHaveNotBeenAlmostEqual    = "Expected '%v' to NOT almost equal '%v' (but it did)!"
 	shouldHaveResembled             = "Expected: '%#v'\nActual:   '%#v'\n(Should resemble)!"
-	shouldHaveResembledTypeMismatch = "Expected: '%#v'\nActual:   '%#v'\n(Type mismatch: '%T' vs '%T')!"
+	shouldHaveResembledTypeMismatch = "Expected: '%#v' (%T)\nActual:   '%#v' (%T)\n(Should resemble, type mismatch)"
 	shouldNotHaveResembled          = "Expected        '%#v'\nto NOT resemble '%#v'\n(but it did)!"
 	shouldBePointers                = "Both arguments should be pointers "
 	shouldHaveBeenNonNilPointer     = shouldBePointers + "(the %s was %s)!"
