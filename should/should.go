@@ -46,6 +46,9 @@ var (
 	ContainSubstring    = assertions.ShouldContainSubstring
 	NotContainSubstring = assertions.ShouldNotContainSubstring
 
+	EqualWithout   = assertions.ShouldEqualWithout
+	EqualTrimSpace = assertions.ShouldEqualTrimSpace
+
 	Panic        = assertions.ShouldPanic
 	NotPanic     = assertions.ShouldNotPanic
 	PanicWith    = assertions.ShouldPanicWith

@@ -1,6 +1,4 @@
 # assertions
-[![Build Status](https://travis-ci.org/smartystreets/assertions.png)](https://travis-ci.org/smartystreets/assertions)
-
 --
     import "github.com/smartystreets/assertions"
 
@@ -184,6 +182,24 @@ ends with the second.
 func ShouldEqual(actual interface{}, expected ...interface{}) string
 ```
 ShouldEqual receives exactly two parameters and does an equality check.
+
+#### func  ShouldEqualTrimSpace
+
+```go
+func ShouldEqualTrimSpace(actual interface{}, expected ...interface{}) string
+```
+ShouldEqualTrimSpace receives exactly 2 string parameters and ensures that the
+first is equal to the second after removing all leading and trailing whitespace
+using strings.TrimSpace(first).
+
+#### func  ShouldEqualWithout
+
+```go
+func ShouldEqualWithout(actual interface{}, expected ...interface{}) string
+```
+ShouldEqualWithout receives exactly 3 string parameters and ensures that the
+first is equal to the second after removing all instances of the third from the
+first using strings.Replace(first, third, "", -1).
 
 #### func  ShouldHappenAfter
 

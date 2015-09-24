@@ -50,6 +50,7 @@ const ( // strings
 	shouldNotHaveStartedWith        = "Expected          '%v'\nNOT to start with '%v'\n(but it did)!"
 	shouldHaveEndedWith             = "Expected    '%v'\nto end with '%v'\n(but it didn't)!"
 	shouldNotHaveEndedWith          = "Expected        '%v'\nNOT to end with '%v'\n(but it did)!"
+	shouldAllBeStrings              = "All arguments to this assertion must be strings (you provided: %v)."
 	shouldBothBeStrings             = "Both arguments to this assertion must be strings (you provided %v and %v)."
 	shouldBeString                  = "The argument to this assertion must be a string (you provided %v)."
 	shouldHaveContainedSubstring    = "Expected '%s' to contain substring '%s' (but it didn't)!"
