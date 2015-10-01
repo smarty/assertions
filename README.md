@@ -258,6 +258,14 @@ ShouldHappenWithin receives a time.Time, a time.Duration, and a time.Time (3
 arguments) and asserts that the first time.Time happens within or on the
 duration specified relative to the other time.Time.
 
+#### func  ShouldHaveLength
+
+```go
+func ShouldHaveLength(actual interface{}, expected ...interface{}) string
+```
+ShouldHaveLength receives a collection and a positive integer and asserts that
+the length of the collection is equal to the integer provided.
+
 #### func  ShouldHaveSameTypeAs
 
 ```go
