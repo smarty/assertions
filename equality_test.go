@@ -121,8 +121,8 @@ func TestShouldResemble(t *testing.T) {
 		"[hi bye]|[hi bye]|Expected: '[]string{\"hi\", \"bye\"}' Actual: 'assertions.StringSliceAlias{\"hi\", \"bye\"}' (Should resemble)!")
 
 	// some types come out looking the same when represented with "%#v" so we show type mismatch info:
-	fail(t, so(StringAlias("hi"), ShouldResemble, "hi"), "hi|hi|Expected: '\"hi\"' (string) Actual: '\"hi\"' (assertions.StringAlias) (Should resemble, type mismatch)")
-	fail(t, so(IntAlias(42), ShouldResemble, 42), "42|42|Expected: '42' (int) Actual: '42' (assertions.IntAlias) (Should resemble, type mismatch)")
+	fail(t, so(StringAlias("hi"), ShouldResemble, "hi"), "hi|hi|Expected: '\"hi\"' Actual: 'assertions.StringAlias(\"hi\")' (Should resemble)!")
+	fail(t, so(IntAlias(42), ShouldResemble, 42), "42|42|Expected: '42' Actual: 'assertions.IntAlias(42)' (Should resemble)!")
 }
 
 func TestShouldNotResemble(t *testing.T) {
