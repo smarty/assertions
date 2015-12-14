@@ -15,7 +15,11 @@ type Serializer interface {
 type failureSerializer struct{}
 
 func (self *failureSerializer) serializeDetailed(expected, actual interface{}, message string) string {
-	view := self.format(expected, actual, message, "%#v")
+	view := reporting.FailureView{
+		Message:  message,
+		Expected: DeepRender(expected),
+		Actual:   DeepRender(actual),
+	}
 	serialized, err := json.Marshal(view)
 	if err != nil {
 		return message
@@ -24,20 +28,16 @@ func (self *failureSerializer) serializeDetailed(expected, actual interface{}, m
 }
 
 func (self *failureSerializer) serialize(expected, actual interface{}, message string) string {
-	view := self.format(expected, actual, message, "%+v")
+	view := reporting.FailureView{
+		Message:  message,
+		Expected: fmt.Sprintf("%+v", expected),
+		Actual:   fmt.Sprintf("%+v", actual),
+	}
 	serialized, err := json.Marshal(view)
 	if err != nil {
 		return message
 	}
 	return string(serialized)
-}
-
-func (self *failureSerializer) format(expected, actual interface{}, message string, format string) reporting.FailureView {
-	return reporting.FailureView{
-		Message:  message,
-		Expected: fmt.Sprintf(format, expected),
-		Actual:   fmt.Sprintf(format, actual),
-	}
 }
 
 func newSerializer() *failureSerializer {
