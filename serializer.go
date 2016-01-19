@@ -3,8 +3,6 @@ package assertions
 import (
 	"encoding/json"
 	"fmt"
-
-	"github.com/smartystreets/goconvey/convey/reporting"
 )
 
 type Serializer interface {
@@ -32,8 +30,8 @@ func (self *failureSerializer) serialize(expected, actual interface{}, message s
 	return string(serialized)
 }
 
-func (self *failureSerializer) format(expected, actual interface{}, message string, format string) reporting.FailureView {
-	return reporting.FailureView{
+func (self *failureSerializer) format(expected, actual interface{}, message string, format string) FailureView {
+	return FailureView{
 		Message:  message,
 		Expected: fmt.Sprintf(format, expected),
 		Actual:   fmt.Sprintf(format, actual),
@@ -42,6 +40,14 @@ func (self *failureSerializer) format(expected, actual interface{}, message stri
 
 func newSerializer() *failureSerializer {
 	return &failureSerializer{}
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+type FailureView struct {
+	Message  string
+	Expected string
+	Actual   string
 }
 
 ///////////////////////////////////////////////////////
