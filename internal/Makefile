@@ -2,7 +2,7 @@
 # rewrites the imports to match this location,
 # and ensures that all the tests pass.
 
-go: clean clone rewrite test
+go: clean clone rewrite
 
 clean:
 	rm -rf ogle*
@@ -18,7 +18,6 @@ clone:
 
 rewrite:
 	grep -rl --exclude Makefile 'github.com/jacobsa' . | xargs sed -i '' 's#github.com/jacobsa#github.com/smartystreets/assertions/internal#g'
-
 
 test:
 	go test github.com/smartystreets/assertions/...
