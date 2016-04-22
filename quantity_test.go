@@ -66,10 +66,10 @@ func TestShouldBeLessThanOrEqualTo(t *testing.T) {
 	pass(t, so(uint(0), ShouldBeLessThanOrEqualTo, 1))
 	pass(t, so("a", ShouldBeLessThanOrEqualTo, "b"))
 
-	fail(t, so(1, ShouldBeLessThanOrEqualTo, 0), "Expected '1' to be less than '0' (but it wasn't)!")
-	fail(t, so(1.1, ShouldBeLessThanOrEqualTo, 1), "Expected '1.1' to be less than '1' (but it wasn't)!")
-	fail(t, so(1.1, ShouldBeLessThanOrEqualTo, uint(0)), "Expected '1.1' to be less than '0' (but it wasn't)!")
-	fail(t, so("b", ShouldBeLessThanOrEqualTo, "a"), "Expected 'b' to be less than 'a' (but it wasn't)!")
+	fail(t, so(1, ShouldBeLessThanOrEqualTo, 0), "Expected '1' to be less than or equal to '0' (but it wasn't)!")
+	fail(t, so(1.1, ShouldBeLessThanOrEqualTo, 1), "Expected '1.1' to be less than or equal to '1' (but it wasn't)!")
+	fail(t, so(1.1, ShouldBeLessThanOrEqualTo, uint(0)), "Expected '1.1' to be less than or equal to '0' (but it wasn't)!")
+	fail(t, so("b", ShouldBeLessThanOrEqualTo, "a"), "Expected 'b' to be less than or equal to 'a' (but it wasn't)!")
 }
 
 func TestShouldBeBetween(t *testing.T) {
