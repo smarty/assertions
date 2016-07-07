@@ -3,8 +3,6 @@ package assertions
 import (
 	"bytes"
 	"fmt"
-	"log"
-	"os"
 	"testing"
 )
 
@@ -50,30 +48,10 @@ func TestFailingGroupsOfAssertions(t *testing.T) {
 	}
 }
 
-func TestAssertionAsIOWriterCapturesLogging(t *testing.T) {
-	oldFlags := log.Flags()
-	fake := &FakeT{buffer: new(bytes.Buffer)}
-	assertion := New(fake)
-
-	log.SetOutput(assertion)
-	log.SetFlags(0)
-	log.Println("Hello, World!")
-	log.SetOutput(os.Stderr) // restore previous output
-	log.SetFlags(oldFlags)   // restore previous flags
-
-	if content := fake.buffer.String(); content != "Hello, World!\n" {
-		t.Errorf("\nGot: [%s]\nWant: [Hello, World!\n]", content)
-	}
-}
-
 type FakeT struct {
 	buffer *bytes.Buffer
 }
 
 func (this *FakeT) Error(args ...interface{}) {
-	fmt.Fprint(this.buffer, args...)
-}
-
-func (this *FakeT) Log(args ...interface{}) {
 	fmt.Fprint(this.buffer, args...)
 }

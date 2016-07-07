@@ -37,7 +37,6 @@ func GoConveyMode(yes bool) {
 
 type testingT interface {
 	Error(args ...interface{})
-	Log(args ...interface{})
 }
 
 type Assertion struct {
@@ -65,14 +64,6 @@ func (this *Assertion) So(actual interface{}, assert assertion, expected ...inte
 		this.t.Error(fmt.Sprintf("\n%s:%d\n%s", file, line, result))
 	}
 	return ok
-}
-
-// Write implements io.Writer, basically adapting *testing.T into io.Writer (handy for capturing log output).
-func (this *Assertion) Write(p []byte) (int, error) {
-	// It's a bit presumptuous to just assume the bytes are a string, but that's the intended use case.
-	message := string(p)
-	this.t.Log(message)
-	return len(p), nil
 }
 
 // So is a convenience function (as opposed to an inconvenience function?)
