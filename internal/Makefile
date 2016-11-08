@@ -34,3 +34,4 @@ trim:
 	rm oglematchers/new_matcher.go
 	rm oglematchers/panics.go
 	rm oglematchers/pointee.go
+	rm go-render/render/*_test.go
