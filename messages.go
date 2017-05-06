@@ -77,6 +77,9 @@ const ( // type checking
 	shouldNotHaveImplemented          = "Expected         '%v'\nto NOT implement '%v'\n(but it did)!"
 	shouldCompareWithInterfacePointer = "The expected value must be a pointer to an interface type (eg. *fmt.Stringer)"
 	shouldNotBeNilActual              = "The actual value was 'nil' and should be a value or a pointer to a value!"
+
+	shouldBeError                   = "Expected error to occur!"
+	shouldBeErrorExpectedMessage    = "Expected error '%v' to occur (but got error: '%v')!"
 )
 
 const ( // time comparisons
