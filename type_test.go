@@ -2,6 +2,7 @@ package assertions
 
 import (
 	"bytes"
+	"errors"
 	"io"
 	"net/http"
 	"testing"
@@ -73,4 +74,20 @@ func TestShouldNotImplement(t *testing.T) {
 	pass(t, so(1, ShouldNotImplement, ioReader))
 	pass(t, so(response, ShouldNotImplement, ioReader))
 	pass(t, so(responsePtr, ShouldNotImplement, ioReader))
+}
+
+func TestShouldBeError(t *testing.T) {
+	funcThatWillError := func(returnError bool) error {
+		if returnError {
+			return errors.New("Fake error.")
+		}
+		return nil
+	}
+
+	pass(t, so(funcThatWillError(true), ShouldBeError))
+	pass(t, so(funcThatWillError(true), ShouldBeError, "Fake error."))
+	fail(t, so(funcThatWillError(false), ShouldBeError), "Expected error to occur!")
+	fail(t, so(1, ShouldBeError), "Expected error to occur!")
+	fail(t, so(funcThatWillError(true), ShouldBeError, 42), "This assertion requires an error message string to be provided (you provided a non-string type).")
+	fail(t, so(funcThatWillError(true), ShouldBeError, "Wrong error"), "Expected error 'Wrong error' to occur (but got error: 'Fake error.')!")
 }

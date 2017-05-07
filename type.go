@@ -110,3 +110,43 @@ func ShouldNotImplement(actual interface{}, expectedList ...interface{}) string 
 	}
 	return success
 }
+
+// ShouldBeError receives one parameter and ensures
+// that it is an error interface.
+// It optionally takes an additional second parameter to test
+// an expected error message.
+func ShouldBeError(actual interface{}, expected ...interface{}) string {
+	expectedErrMsg, err := cleanShouldBeErrorInput(actual, expected...)
+
+	if err != "" {
+		return err
+	}
+
+	val, ok := actual.(error)
+	if !ok {
+		return shouldBeError
+	}
+
+	if expectedErrMsg != "" && val.Error() != expectedErrMsg {
+		return fmt.Sprintf(shouldBeErrorExpectedMessage, expectedErrMsg, val.Error())
+	}
+
+	return success
+}
+
+// Clean the `ShouldBeError` assertion input.
+// If a second, optional argument was passed (the expected error message),
+// it will be returned. Otherwise, return an empty string and an error message.
+func cleanShouldBeErrorInput(actual interface{}, expected ...interface{}) (string, string) {
+	if len(expected) == 0 {
+		return "", ""
+	}
+
+	// Make sure the provided is a string
+	val, ok := expected[0].(string)
+	if !ok {
+		return "", "This assertion requires an error message string to be provided (you provided a non-string type)."
+	}
+
+	return val, ""
+}
