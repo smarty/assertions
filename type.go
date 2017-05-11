@@ -111,42 +111,27 @@ func ShouldNotImplement(actual interface{}, expectedList ...interface{}) string 
 	return success
 }
 
-// ShouldBeError receives one parameter and ensures
-// that it is an error interface.
-// It optionally takes an additional second parameter to test
-// an expected error message.
+// ShouldBeError asserts that the first argument implements the error interface.
+// It also compares the first argument against the second argument if provided
+// (which must be an error message string or another error value).
 func ShouldBeError(actual interface{}, expected ...interface{}) string {
-	expectedErrMsg, err := cleanShouldBeErrorInput(actual, expected...)
-
-	if err != "" {
-		return err
+	if fail := atMost(1, expected); fail != success {
+		return fail
 	}
 
-	val, ok := actual.(error)
-	if !ok {
-		return shouldBeError
+	if !isError(actual) {
+		return fmt.Sprintf(shouldBeError, reflect.TypeOf(actual))
 	}
 
-	if expectedErrMsg != "" && val.Error() != expectedErrMsg {
-		return fmt.Sprintf(shouldBeErrorExpectedMessage, expectedErrMsg, val.Error())
-	}
-
-	return success
-}
-
-// Clean the `ShouldBeError` assertion input.
-// If a second, optional argument was passed (the expected error message),
-// it will be returned. Otherwise, return an empty string and an error message.
-func cleanShouldBeErrorInput(actual interface{}, expected ...interface{}) (string, string) {
 	if len(expected) == 0 {
-		return "", ""
+		return success
 	}
 
-	// Make sure the provided is a string
-	val, ok := expected[0].(string)
-	if !ok {
-		return "", "This assertion requires an error message string to be provided (you provided a non-string type)."
+	if expected := expected[0]; !isString(expected) && !isError(expected) {
+		return fmt.Sprintf(shouldBeErrorInvalidComparisonValue, reflect.TypeOf(expected))
 	}
-
-	return val, ""
+	return ShouldEqual(fmt.Sprint(actual), fmt.Sprint(expected[0]))
 }
+
+func isString(value interface{}) bool { _, ok := value.(string); return ok }
+func isError(value interface{}) bool  { _, ok := value.(error); return ok }

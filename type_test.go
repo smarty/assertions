@@ -8,6 +8,10 @@ import (
 	"testing"
 )
 
+func init() {
+	serializer = newFakeSerializer()
+}
+
 func TestShouldHaveSameTypeAs(t *testing.T) {
 	serializer = newFakeSerializer()
 
@@ -77,17 +81,19 @@ func TestShouldNotImplement(t *testing.T) {
 }
 
 func TestShouldBeError(t *testing.T) {
-	funcThatWillError := func(returnError bool) error {
-		if returnError {
-			return errors.New("Fake error.")
-		}
-		return nil
-	}
+	serializer = newFakeSerializer()
 
-	pass(t, so(funcThatWillError(true), ShouldBeError))
-	pass(t, so(funcThatWillError(true), ShouldBeError, "Fake error."))
-	fail(t, so(funcThatWillError(false), ShouldBeError), "Expected error to occur!")
-	fail(t, so(1, ShouldBeError), "Expected error to occur!")
-	fail(t, so(funcThatWillError(true), ShouldBeError, 42), "This assertion requires an error message string to be provided (you provided a non-string type).")
-	fail(t, so(funcThatWillError(true), ShouldBeError, "Wrong error"), "Expected error 'Wrong error' to occur (but got error: 'Fake error.')!")
+	fail(t, so(nil, ShouldBeError, "too", "many"), "This assertion allows 1 or fewer comparison values (you provided 2).")
+
+	fail(t, so(1, ShouldBeError), "Expected an error value (but was 'int' instead)!")
+	fail(t, so(nil, ShouldBeError), "Expected an error value (but was '<nil>' instead)!")
+
+	error1 := errors.New("Message")
+
+	fail(t, so(error1, ShouldBeError, 42), "The final argument to this assertion must be a string or an error value (you provided: 'int').")
+	fail(t, so(error1, ShouldBeError, "Wrong error message"), "Wrong error message|Message|Expected: 'Wrong error message' Actual: 'Message' (Should be equal)")
+
+	pass(t, so(error1, ShouldBeError))
+	pass(t, so(error1, ShouldBeError, error1))
+	pass(t, so(error1, ShouldBeError, error1.Error()))
 }

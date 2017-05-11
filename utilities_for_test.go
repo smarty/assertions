@@ -2,7 +2,6 @@ package assertions
 
 import (
 	"fmt"
-	"path"
 	"runtime"
 	"strings"
 	"testing"
@@ -11,8 +10,7 @@ import (
 func pass(t *testing.T, result string) {
 	if result != success {
 		_, file, line, _ := runtime.Caller(1)
-		base := path.Base(file)
-		t.Errorf("Expectation should have passed but failed (see %s: line %d): '%s'", base, line, result)
+		t.Errorf("Failure:\n%s:%d\nMessage: '%s'", file, line, result)
 	}
 }
 
@@ -57,7 +55,7 @@ type StringAlias string
 type StringSliceAlias []string
 type StringStringMapAlias map[string]string
 
-/******** FakeSerialzier ********/
+/******** FakeSerializer ********/
 
 type fakeSerializer struct{}
 
