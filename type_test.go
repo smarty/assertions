@@ -8,13 +8,7 @@ import (
 	"testing"
 )
 
-func init() {
-	serializer = newFakeSerializer()
-}
-
 func TestShouldHaveSameTypeAs(t *testing.T) {
-	serializer = newFakeSerializer()
-
 	fail(t, so(1, ShouldHaveSameTypeAs), "This assertion requires exactly 1 comparison values (you provided 0).")
 	fail(t, so(1, ShouldHaveSameTypeAs, 1, 2, 3), "This assertion requires exactly 1 comparison values (you provided 3).")
 
@@ -81,8 +75,6 @@ func TestShouldNotImplement(t *testing.T) {
 }
 
 func TestShouldBeError(t *testing.T) {
-	serializer = newFakeSerializer()
-
 	fail(t, so(nil, ShouldBeError, "too", "many"), "This assertion allows 1 or fewer comparison values (you provided 2).")
 
 	fail(t, so(1, ShouldBeError), "Expected an error value (but was 'int' instead)!")

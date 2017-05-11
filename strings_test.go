@@ -3,8 +3,6 @@ package assertions
 import "testing"
 
 func TestShouldStartWith(t *testing.T) {
-	serializer = newFakeSerializer()
-
 	fail(t, so("", ShouldStartWith), "This assertion requires exactly 1 comparison values (you provided 0).")
 	fail(t, so("", ShouldStartWith, "asdf", "asdf"), "This assertion requires exactly 1 comparison values (you provided 2).")
 
@@ -33,8 +31,6 @@ func TestShouldNotStartWith(t *testing.T) {
 }
 
 func TestShouldEndWith(t *testing.T) {
-	serializer = newFakeSerializer()
-
 	fail(t, so("", ShouldEndWith), "This assertion requires exactly 1 comparison values (you provided 0).")
 	fail(t, so("", ShouldEndWith, "", ""), "This assertion requires exactly 1 comparison values (you provided 2).")
 
@@ -62,8 +58,6 @@ func TestShouldNotEndWith(t *testing.T) {
 }
 
 func TestShouldContainSubstring(t *testing.T) {
-	serializer = newFakeSerializer()
-
 	fail(t, so("asdf", ShouldContainSubstring), "This assertion requires exactly 1 comparison values (you provided 0).")
 	fail(t, so("asdf", ShouldContainSubstring, 1, 2, 3), "This assertion requires exactly 1 comparison values (you provided 3).")
 
@@ -84,8 +78,6 @@ func TestShouldNotContainSubstring(t *testing.T) {
 }
 
 func TestShouldBeBlank(t *testing.T) {
-	serializer = newFakeSerializer()
-
 	fail(t, so("", ShouldBeBlank, "adsf"), "This assertion requires exactly 0 comparison values (you provided 1).")
 	fail(t, so(1, ShouldBeBlank), "The argument to this assertion must be a string (you provided int).")
 

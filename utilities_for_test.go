@@ -57,6 +57,10 @@ type StringStringMapAlias map[string]string
 
 /******** FakeSerializer ********/
 
+func init() {
+	serializer = newFakeSerializer()
+}
+
 type fakeSerializer struct{}
 
 func (self *fakeSerializer) serialize(expected, actual interface{}, message string) string {
