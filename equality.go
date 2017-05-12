@@ -11,9 +11,6 @@ import (
 	"github.com/smartystreets/assertions/internal/oglematchers"
 )
 
-// default acceptable delta for ShouldAlmostEqual
-const defaultDelta = 0.0000000001
-
 // ShouldEqual receives exactly two parameters and does an equality check.
 func ShouldEqual(actual interface{}, expected ...interface{}) string {
 	if message := need(1, expected); message != success {
