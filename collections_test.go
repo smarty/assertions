@@ -166,5 +166,6 @@ func (this *AssertionsFixture) TestShouldHaveLength() {
 	go func() { c <- 1 }()
 	time.Sleep(time.Millisecond)
 	this.pass(so(c, ShouldHaveLength, 1))
+	this.pass(so(c, ShouldHaveLength, uint(1)))
 
 }

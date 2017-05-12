@@ -53,8 +53,12 @@ func (this *AssertionsFixture) TestShouldNotEqual() {
 func (this *AssertionsFixture) TestShouldAlmostEqual() {
 	this.fail(so(1, ShouldAlmostEqual), "This assertion requires exactly one comparison value and an optional delta (you provided neither)")
 	this.fail(so(1, ShouldAlmostEqual, 1, 2, 3), "This assertion requires exactly one comparison value and an optional delta (you provided more values)")
+	this.fail(so(1, ShouldAlmostEqual, "1"), "The comparison value must be a numerical type, but was: string")
+	this.fail(so(1, ShouldAlmostEqual, 1, "1"), "The delta value must be a numerical type, but was: string")
+	this.fail(so("1", ShouldAlmostEqual, 1), "The actual value must be a numerical type, but was: string")
 
 	// with the default delta
+	this.pass(so(.99999999999999, ShouldAlmostEqual, uint(1)))
 	this.pass(so(1, ShouldAlmostEqual, .99999999999999))
 	this.pass(so(1.3612499999999996, ShouldAlmostEqual, 1.36125))
 	this.pass(so(0.7285312499999999, ShouldAlmostEqual, 0.72853125))
@@ -64,11 +68,22 @@ func (this *AssertionsFixture) TestShouldAlmostEqual() {
 	this.pass(so(100.0, ShouldAlmostEqual, 110.0, 10.0))
 	this.fail(so(100.0, ShouldAlmostEqual, 111.0, 10.5), "Expected '100' to almost equal '111' (but it didn't)!")
 
-	// ints should work
+	// various ints should work
+	this.pass(so(100, ShouldAlmostEqual, 100.0))
+	this.pass(so(int(100), ShouldAlmostEqual, 100.0))
+	this.pass(so(int8(100), ShouldAlmostEqual, 100.0))
+	this.pass(so(int16(100), ShouldAlmostEqual, 100.0))
+	this.pass(so(int32(100), ShouldAlmostEqual, 100.0))
+	this.pass(so(int64(100), ShouldAlmostEqual, 100.0))
+	this.pass(so(uint(100), ShouldAlmostEqual, 100.0))
+	this.pass(so(uint8(100), ShouldAlmostEqual, 100.0))
+	this.pass(so(uint16(100), ShouldAlmostEqual, 100.0))
+	this.pass(so(uint32(100), ShouldAlmostEqual, 100.0))
+	this.pass(so(uint64(100), ShouldAlmostEqual, 100.0))
 	this.pass(so(100, ShouldAlmostEqual, 100.0))
 	this.fail(so(100, ShouldAlmostEqual, 99.0), "Expected '100' to almost equal '99' (but it didn't)!")
 
-	// float32 should work
+	// floats should work
 	this.pass(so(float64(100.0), ShouldAlmostEqual, float32(100.0)))
 	this.fail(so(float32(100.0), ShouldAlmostEqual, 99.0, float32(0.1)), "Expected '100' to almost equal '99' (but it didn't)!")
 }
