@@ -31,7 +31,7 @@ func (self *AssertionsFixture) serializeDetailed(expected, actual interface{}, m
 }
 
 func (this *AssertionsFixture) pass(result string) {
-	this.Ok(result == success, result)
+	this.Assert(result == success, result)
 }
 
 func (this *AssertionsFixture) fail(actual string, expected string) {
