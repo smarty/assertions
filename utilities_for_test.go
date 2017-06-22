@@ -18,23 +18,23 @@ type AssertionsFixture struct {
 	*gunit.Fixture
 }
 
-func (this *AssertionsFixture) Setup() {
-	serializer = this
+func (fixture *AssertionsFixture) Setup() {
+	serializer = fixture
 }
 
-func (self *AssertionsFixture) serialize(expected, actual interface{}, message string) string {
+func (fixture *AssertionsFixture) serialize(expected, actual interface{}, message string) string {
 	return fmt.Sprintf("%v|%v|%s", expected, actual, message)
 }
 
-func (self *AssertionsFixture) serializeDetailed(expected, actual interface{}, message string) string {
+func (fixture *AssertionsFixture) serializeDetailed(expected, actual interface{}, message string) string {
 	return fmt.Sprintf("%v|%v|%s", expected, actual, message)
 }
 
-func (this *AssertionsFixture) pass(result string) {
-	this.Assert(result == success, result)
+func (fixture *AssertionsFixture) pass(result string) {
+	fixture.Assert(result == success, result)
 }
 
-func (this *AssertionsFixture) fail(actual string, expected string) {
+func (fixture *AssertionsFixture) fail(actual string, expected string) {
 	actual = format(actual)
 	expected = format(expected)
 
@@ -42,7 +42,7 @@ func (this *AssertionsFixture) fail(actual string, expected string) {
 		if actual == "" {
 			actual = "(empty)"
 		}
-		this.Errorf("Expected: %s\nActual:   %s\n", expected, actual)
+		fixture.Errorf("Expected: %s\nActual:   %s\n", expected, actual)
 	}
 }
 func format(message string) string {
@@ -68,7 +68,7 @@ type ThingInterface interface {
 
 type ThingImplementation struct{}
 
-func (self *ThingImplementation) Hi() {}
+func (fixture *ThingImplementation) Hi() {}
 
 type IntAlias int
 type StringAlias string

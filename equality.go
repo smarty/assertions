@@ -45,7 +45,8 @@ func shouldEqual(actual, expected interface{}) (message string) {
 func ShouldNotEqual(actual interface{}, expected ...interface{}) string {
 	if fail := need(1, expected); fail != success {
 		return fail
-	} else if ShouldEqual(actual, expected[0]) == success {
+	}
+	if ShouldEqual(actual, expected[0]) == success {
 		return fmt.Sprintf(shouldNotHaveBeenEqual, actual, expected[0])
 	}
 	return success
@@ -63,9 +64,8 @@ func ShouldAlmostEqual(actual interface{}, expected ...interface{}) string {
 
 	if math.Abs(actualFloat-expectedFloat) <= deltaFloat {
 		return success
-	} else {
-		return fmt.Sprintf(shouldHaveBeenAlmostEqual, actualFloat, expectedFloat)
 	}
+	return fmt.Sprintf(shouldHaveBeenAlmostEqual, actualFloat, expectedFloat)
 }
 
 // ShouldNotAlmostEqual is the inverse of ShouldAlmostEqual
@@ -78,9 +78,8 @@ func ShouldNotAlmostEqual(actual interface{}, expected ...interface{}) string {
 
 	if math.Abs(actualFloat-expectedFloat) > deltaFloat {
 		return success
-	} else {
-		return fmt.Sprintf(shouldHaveNotBeenAlmostEqual, actualFloat, expectedFloat)
 	}
+	return fmt.Sprintf(shouldHaveNotBeenAlmostEqual, actualFloat, expectedFloat)
 }
 
 func cleanAlmostEqualInput(actual interface{}, expected ...interface{}) (float64, float64, float64, string) {
@@ -88,7 +87,11 @@ func cleanAlmostEqualInput(actual interface{}, expected ...interface{}) (float64
 
 	if len(expected) == 0 {
 		return 0.0, 0.0, 0.0, "This assertion requires exactly one comparison value and an optional delta (you provided neither)"
-	} else if len(expected) == 2 {
+	}
+	if len(expected) > 2 {
+		return 0.0, 0.0, 0.0, "This assertion requires exactly one comparison value and an optional delta (you provided more values)"
+	}
+	if len(expected) == 2 {
 		delta, err := getFloat(expected[1])
 
 		if err != nil {
@@ -96,8 +99,6 @@ func cleanAlmostEqualInput(actual interface{}, expected ...interface{}) (float64
 		}
 
 		deltaFloat = delta
-	} else if len(expected) > 2 {
-		return 0.0, 0.0, 0.0, "This assertion requires exactly one comparison value and an optional delta (you provided more values)"
 	}
 
 	actualFloat, err := getFloat(actual)
@@ -124,18 +125,19 @@ func getFloat(num interface{}) (float64, error) {
 		numKind == reflect.Int32 ||
 		numKind == reflect.Int64 {
 		return float64(numValue.Int()), nil
-	} else if numKind == reflect.Uint ||
+	}
+	if numKind == reflect.Uint ||
 		numKind == reflect.Uint8 ||
 		numKind == reflect.Uint16 ||
 		numKind == reflect.Uint32 ||
 		numKind == reflect.Uint64 {
 		return float64(numValue.Uint()), nil
-	} else if numKind == reflect.Float32 ||
+	}
+	if numKind == reflect.Float32 ||
 		numKind == reflect.Float64 {
 		return numValue.Float(), nil
-	} else {
-		return 0.0, errors.New("must be a numerical type, but was: " + numKind.String())
 	}
+	return 0.0, errors.New("must be a numerical type, but was: " + numKind.String())
 }
 
 // ShouldResemble receives exactly two parameters and does a deep equal check (see reflect.DeepEqual)
@@ -156,7 +158,8 @@ func ShouldResemble(actual interface{}, expected ...interface{}) string {
 func ShouldNotResemble(actual interface{}, expected ...interface{}) string {
 	if message := need(1, expected); message != success {
 		return message
-	} else if ShouldResemble(actual, expected[0]) == success {
+	}
+	if ShouldResemble(actual, expected[0]) == success {
 		return fmt.Sprintf(shouldNotHaveResembled, render.Render(actual), render.Render(expected[0]))
 	}
 	return success
@@ -176,13 +179,17 @@ func shouldPointTo(actual, expected interface{}) string {
 
 	if ShouldNotBeNil(actual) != success {
 		return fmt.Sprintf(shouldHaveBeenNonNilPointer, "first", "nil")
-	} else if ShouldNotBeNil(expected) != success {
+	}
+	if ShouldNotBeNil(expected) != success {
 		return fmt.Sprintf(shouldHaveBeenNonNilPointer, "second", "nil")
-	} else if actualValue.Kind() != reflect.Ptr {
+	}
+	if actualValue.Kind() != reflect.Ptr {
 		return fmt.Sprintf(shouldHaveBeenNonNilPointer, "first", "not")
-	} else if expectedValue.Kind() != reflect.Ptr {
+	}
+	if expectedValue.Kind() != reflect.Ptr {
 		return fmt.Sprintf(shouldHaveBeenNonNilPointer, "second", "not")
-	} else if ShouldEqual(actualValue.Pointer(), expectedValue.Pointer()) != success {
+	}
+	if ShouldEqual(actualValue.Pointer(), expectedValue.Pointer()) != success {
 		actualAddress := reflect.ValueOf(actual).Pointer()
 		expectedAddress := reflect.ValueOf(expected).Pointer()
 		return serializer.serialize(expectedAddress, actualAddress, fmt.Sprintf(shouldHavePointedTo,
@@ -200,7 +207,8 @@ func ShouldNotPointTo(actual interface{}, expected ...interface{}) string {
 	compare := ShouldPointTo(actual, expected[0])
 	if strings.HasPrefix(compare, shouldBePointers) {
 		return compare
-	} else if compare == success {
+	}
+	if compare == success {
 		return fmt.Sprintf(shouldNotHavePointedTo, actual, expected[0], reflect.ValueOf(actual).Pointer())
 	}
 	return success
@@ -210,9 +218,11 @@ func ShouldNotPointTo(actual interface{}, expected ...interface{}) string {
 func ShouldBeNil(actual interface{}, expected ...interface{}) string {
 	if fail := need(0, expected); fail != success {
 		return fail
-	} else if actual == nil {
+	}
+	if actual == nil {
 		return success
-	} else if interfaceHasNilValue(actual) {
+	}
+	if interfaceHasNilValue(actual) {
 		return success
 	}
 	return fmt.Sprintf(shouldHaveBeenNil, actual)
@@ -235,7 +245,8 @@ func interfaceHasNilValue(actual interface{}) bool {
 func ShouldNotBeNil(actual interface{}, expected ...interface{}) string {
 	if fail := need(0, expected); fail != success {
 		return fail
-	} else if ShouldBeNil(actual) == success {
+	}
+	if ShouldBeNil(actual) == success {
 		return fmt.Sprintf(shouldNotHaveBeenNil, actual)
 	}
 	return success
@@ -245,7 +256,8 @@ func ShouldNotBeNil(actual interface{}, expected ...interface{}) string {
 func ShouldBeTrue(actual interface{}, expected ...interface{}) string {
 	if fail := need(0, expected); fail != success {
 		return fail
-	} else if actual != true {
+	}
+	if actual != true {
 		return fmt.Sprintf(shouldHaveBeenTrue, actual)
 	}
 	return success
@@ -255,7 +267,8 @@ func ShouldBeTrue(actual interface{}, expected ...interface{}) string {
 func ShouldBeFalse(actual interface{}, expected ...interface{}) string {
 	if fail := need(0, expected); fail != success {
 		return fail
-	} else if actual != false {
+	}
+	if actual != false {
 		return fmt.Sprintf(shouldHaveBeenFalse, actual)
 	}
 	return success

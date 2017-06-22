@@ -22,7 +22,8 @@ func ShouldBeGreaterThan(actual interface{}, expected ...interface{}) string {
 func ShouldBeGreaterThanOrEqualTo(actual interface{}, expected ...interface{}) string {
 	if fail := need(1, expected); fail != success {
 		return fail
-	} else if matchError := oglematchers.GreaterOrEqual(expected[0]).Matches(actual); matchError != nil {
+	}
+	if matchError := oglematchers.GreaterOrEqual(expected[0]).Matches(actual); matchError != nil {
 		return fmt.Sprintf(shouldHaveBeenGreaterOrEqual, actual, expected[0])
 	}
 	return success
@@ -32,17 +33,19 @@ func ShouldBeGreaterThanOrEqualTo(actual interface{}, expected ...interface{}) s
 func ShouldBeLessThan(actual interface{}, expected ...interface{}) string {
 	if fail := need(1, expected); fail != success {
 		return fail
-	} else if matchError := oglematchers.LessThan(expected[0]).Matches(actual); matchError != nil {
+	}
+	if matchError := oglematchers.LessThan(expected[0]).Matches(actual); matchError != nil {
 		return fmt.Sprintf(shouldHaveBeenLess, actual, expected[0])
 	}
 	return success
 }
 
-// ShouldBeLessThan receives exactly two parameters and ensures that the first is less than or equal to the second.
+// ShouldBeLessThanOrEqualTo receives exactly two parameters and ensures that the first is less than or equal to the second.
 func ShouldBeLessThanOrEqualTo(actual interface{}, expected ...interface{}) string {
 	if fail := need(1, expected); fail != success {
 		return fail
-	} else if matchError := oglematchers.LessOrEqual(expected[0]).Matches(actual); matchError != nil {
+	}
+	if matchError := oglematchers.LessOrEqual(expected[0]).Matches(actual); matchError != nil {
 		return fmt.Sprintf(shouldHaveBeenLessOrEqual, actual, expected[0])
 	}
 	return success
@@ -58,7 +61,8 @@ func ShouldBeBetween(actual interface{}, expected ...interface{}) string {
 
 	if fail != success {
 		return fail
-	} else if !isBetween(actual, lower, upper) {
+	}
+	if !isBetween(actual, lower, upper) {
 		return fmt.Sprintf(shouldHaveBeenBetween, actual, lower, upper)
 	}
 	return success
@@ -74,7 +78,8 @@ func ShouldNotBeBetween(actual interface{}, expected ...interface{}) string {
 
 	if fail != success {
 		return fail
-	} else if isBetween(actual, lower, upper) {
+	}
+	if isBetween(actual, lower, upper) {
 		return fmt.Sprintf(shouldNotHaveBeenBetween, actual, lower, upper)
 	}
 	return success
@@ -85,7 +90,8 @@ func deriveBounds(values []interface{}) (lower interface{}, upper interface{}, f
 
 	if ShouldNotEqual(lower, upper) != success {
 		return nil, nil, fmt.Sprintf(shouldHaveDifferentUpperAndLower, lower)
-	} else if ShouldBeLessThan(lower, upper) != success {
+	}
+	if ShouldBeLessThan(lower, upper) != success {
 		lower, upper = upper, lower
 	}
 	return lower, upper, success
@@ -93,7 +99,8 @@ func deriveBounds(values []interface{}) (lower interface{}, upper interface{}, f
 func isBetween(value, lower, upper interface{}) bool {
 	if ShouldBeGreaterThan(value, lower) != success {
 		return false
-	} else if ShouldBeLessThan(value, upper) != success {
+	}
+	if ShouldBeLessThan(value, upper) != success {
 		return false
 	}
 	return true
@@ -109,7 +116,8 @@ func ShouldBeBetweenOrEqual(actual interface{}, expected ...interface{}) string 
 
 	if fail != success {
 		return fail
-	} else if !isBetweenOrEqual(actual, lower, upper) {
+	}
+	if !isBetweenOrEqual(actual, lower, upper) {
 		return fmt.Sprintf(shouldHaveBeenBetweenOrEqual, actual, lower, upper)
 	}
 	return success
@@ -125,7 +133,8 @@ func ShouldNotBeBetweenOrEqual(actual interface{}, expected ...interface{}) stri
 
 	if fail != success {
 		return fail
-	} else if isBetweenOrEqual(actual, lower, upper) {
+	}
+	if isBetweenOrEqual(actual, lower, upper) {
 		return fmt.Sprintf(shouldNotHaveBeenBetweenOrEqual, actual, lower, upper)
 	}
 	return success
@@ -134,7 +143,8 @@ func ShouldNotBeBetweenOrEqual(actual interface{}, expected ...interface{}) stri
 func isBetweenOrEqual(value, lower, upper interface{}) bool {
 	if ShouldBeGreaterThanOrEqualTo(value, lower) != success {
 		return false
-	} else if ShouldBeLessThanOrEqualTo(value, upper) != success {
+	}
+	if ShouldBeLessThanOrEqualTo(value, upper) != success {
 		return false
 	}
 	return true

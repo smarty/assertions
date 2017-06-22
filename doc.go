@@ -51,17 +51,17 @@ func New(t testingT) *Assertion {
 }
 
 // Failed reports whether any calls to So (on this Assertion instance) have failed.
-func (this *Assertion) Failed() bool {
-	return this.failed
+func (a *Assertion) Failed() bool {
+	return a.failed
 }
 
 // So calls the standalone So function and additionally, calls t.Error in failure scenarios.
-func (this *Assertion) So(actual interface{}, assert assertion, expected ...interface{}) bool {
+func (a *Assertion) So(actual interface{}, assert assertion, expected ...interface{}) bool {
 	ok, result := So(actual, assert, expected...)
 	if !ok {
-		this.failed = true
+		a.failed = true
 		_, file, line, _ := runtime.Caller(1)
-		this.t.Error(fmt.Sprintf("\n%s:%d\n%s", file, line, result))
+		a.t.Error(fmt.Sprintf("\n%s:%d\n%s", file, line, result))
 	}
 	return ok
 }
@@ -83,11 +83,11 @@ func (this *Assertion) So(actual interface{}, assert assertion, expected ...inte
 //   }
 //
 func So(actual interface{}, assert assertion, expected ...interface{}) (bool, string) {
-	if result := so(actual, assert, expected...); len(result) == 0 {
+	result := so(actual, assert, expected...)
+	if len(result) == 0 {
 		return true, result
-	} else {
-		return false, result
 	}
+	return false, result
 }
 
 // so is like So, except that it only returns the string message, which is blank if the
