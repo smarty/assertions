@@ -14,7 +14,7 @@ type Serializer interface {
 
 type failureSerializer struct{}
 
-func (self *failureSerializer) serializeDetailed(expected, actual interface{}, message string) string {
+func (f *failureSerializer) serializeDetailed(expected, actual interface{}, message string) string {
 	view := FailureView{
 		Message:  message,
 		Expected: render.Render(expected),
@@ -24,7 +24,7 @@ func (self *failureSerializer) serializeDetailed(expected, actual interface{}, m
 	return string(serialized)
 }
 
-func (self *failureSerializer) serialize(expected, actual interface{}, message string) string {
+func (f *failureSerializer) serialize(expected, actual interface{}, message string) string {
 	view := FailureView{
 		Message:  message,
 		Expected: fmt.Sprintf("%+v", expected),
@@ -40,7 +40,7 @@ func newSerializer() *failureSerializer {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-// This struct is also declared in github.com/smartystreets/goconvey/convey/reporting.
+// FailureView struct is also declared in github.com/smartystreets/goconvey/convey/reporting.
 // The json struct tags should be equal in both declarations.
 type FailureView struct {
 	Message  string `json:"Message"`
@@ -55,9 +55,9 @@ type FailureView struct {
 // structure provided by the failureSerializer.
 type noopSerializer struct{}
 
-func (self *noopSerializer) serialize(expected, actual interface{}, message string) string {
+func (noop *noopSerializer) serialize(expected, actual interface{}, message string) string {
 	return message
 }
-func (self *noopSerializer) serializeDetailed(expected, actual interface{}, message string) string {
+func (noop *noopSerializer) serializeDetailed(expected, actual interface{}, message string) string {
 	return message
 }
