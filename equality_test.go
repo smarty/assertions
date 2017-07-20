@@ -27,6 +27,10 @@ func (this *AssertionsFixture) TestShouldEqual() {
 	this.fail(so(&Thing1{"hi"}, ShouldEqual, &Thing1{"hi"}), "&{hi}|&{hi}|Expected: '&{hi}' Actual: '&{hi}' (Should be equal)")
 
 	this.fail(so(Thing1{}, ShouldEqual, Thing2{}), "{}|{}|Expected: '{}' Actual: '{}' (Should be equal)")
+
+	this.pass(so(ThingWithEqualMethod{"hi"}, ShouldEqual, ThingWithEqualMethod{"hi"}))
+	this.fail(so(ThingWithEqualMethod{"hi"}, ShouldEqual, ThingWithEqualMethod{"bye"}),
+		"{bye}|{hi}|Expected: '{bye}' Actual: '{hi}' (Should be equal)")
 }
 
 func (this *AssertionsFixture) TestShouldNotEqual() {

@@ -26,7 +26,14 @@ func shouldEqual(actual, expected interface{}) (message string) {
 		}
 	}()
 
-	if matchError := oglematchers.Equals(expected).Matches(actual); matchError != nil {
+	if specification := newEqualityMethodSpecification(expected, actual); specification.IsSatisfied() {
+		if specification.AreEqual() {
+			return success
+		} else {
+			message = fmt.Sprintf(shouldHaveBeenEqual, expected, actual)
+			return serializer.serialize(expected, actual, message)
+		}
+	} else if matchError := oglematchers.Equals(expected).Matches(actual); matchError != nil {
 		expectedSyntax := fmt.Sprintf("%v", expected)
 		actualSyntax := fmt.Sprintf("%v", actual)
 		if expectedSyntax == actualSyntax && reflect.TypeOf(expected) != reflect.TypeOf(actual) {
@@ -34,8 +41,7 @@ func shouldEqual(actual, expected interface{}) (message string) {
 		} else {
 			message = fmt.Sprintf(shouldHaveBeenEqual, expected, actual)
 		}
-		message = serializer.serialize(expected, actual, message)
-		return
+		return serializer.serialize(expected, actual, message)
 	}
 
 	return success
