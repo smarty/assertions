@@ -22,7 +22,6 @@ func shouldEqual(actual, expected interface{}) (message string) {
 	defer func() {
 		if r := recover(); r != nil {
 			message = serializer.serialize(expected, actual, fmt.Sprintf(shouldHaveBeenEqual, expected, actual))
-			return
 		}
 	}()
 
@@ -33,7 +32,8 @@ func shouldEqual(actual, expected interface{}) (message string) {
 			message = fmt.Sprintf(shouldHaveBeenEqual, expected, actual)
 			return serializer.serialize(expected, actual, message)
 		}
-	} else if matchError := oglematchers.Equals(expected).Matches(actual); matchError != nil {
+	}
+	if matchError := oglematchers.Equals(expected).Matches(actual); matchError != nil {
 		expectedSyntax := fmt.Sprintf("%v", expected)
 		actualSyntax := fmt.Sprintf("%v", actual)
 		if expectedSyntax == actualSyntax && reflect.TypeOf(expected) != reflect.TypeOf(actual) {
