@@ -3,6 +3,7 @@ package assertions
 import (
 	"fmt"
 	"reflect"
+	"time"
 )
 
 func (this *AssertionsFixture) TestShouldEqual() {
@@ -31,6 +32,21 @@ func (this *AssertionsFixture) TestShouldEqual() {
 	this.pass(so(ThingWithEqualMethod{"hi"}, ShouldEqual, ThingWithEqualMethod{"hi"}))
 	this.fail(so(ThingWithEqualMethod{"hi"}, ShouldEqual, ThingWithEqualMethod{"bye"}),
 		"{bye}|{hi}|Expected: '{bye}' Actual: '{hi}' (Should be equal)")
+
+}
+func (this *AssertionsFixture) TestTimeEqual() {
+	var (
+		gopherCon, _ = time.LoadLocation("America/Denver")
+		elsewhere, _ = time.LoadLocation("America/New_York")
+
+		timeNow          = time.Now().In(gopherCon)
+		timeNowElsewhere = timeNow.In(elsewhere)
+		timeLater        = timeNow.Add(time.Nanosecond)
+	)
+
+	this.pass(so(timeNow, ShouldNotResemble, timeNowElsewhere)) // Differing *Location field prevents ShouldResemble!
+	this.pass(so(timeNow, ShouldEqual, timeNowElsewhere))       // Time.Equal method used to determine exact instant.
+	this.pass(so(timeNow, ShouldNotEqual, timeLater))
 }
 
 func (this *AssertionsFixture) TestShouldNotEqual() {
