@@ -67,8 +67,13 @@ func (this *equalityMethodSpecification) equalMethodReturnsBool() bool {
 }
 
 func (this *equalityMethodSpecification) AreEqual() bool {
-	argument := reflect.ValueOf(this.b)
+	a := reflect.ValueOf(this.a)
+	b := reflect.ValueOf(this.b)
+	return areEqual(a, b) && areEqual(b, a)
+}
+func areEqual(receiver reflect.Value, argument reflect.Value) bool {
+	equalMethod := receiver.MethodByName("Equal")
 	argumentList := []reflect.Value{argument}
-	result := this.equalMethod.Call(argumentList)
+	result := equalMethod.Call(argumentList)
 	return result[0].Bool()
 }

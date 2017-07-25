@@ -115,11 +115,20 @@ func (this *EqualityFixture) TestIneligible_EqualMethodReturnsWrongOutputs() {
 	this.So(specification.IsSatisfied(), ShouldBeFalse)
 }
 
+func (this *EqualityFixture) TestEligibleAsymmetric_EqualMethodResultDiffersWhenArgumentsInverted() {
+	a := EligibleAsymmetric{a: 0}
+	b := EligibleAsymmetric{a: 1}
+	specification := newEqualityMethodSpecification(a, b)
+	this.So(specification.IsSatisfied(), ShouldBeTrue)
+	this.So(specification.AreEqual(), ShouldBeFalse)
+}
+
 /**************************************************************************/
 
 type (
 	Eligible1                            struct{ a string }
 	Eligible2                            struct{ a string }
+	EligibleAsymmetric                   struct{ a int }
 	Ineligible_NoEqualMethod             struct{}
 	Ineligible_EqualMethodNoInputs       struct{}
 	Ineligible_EqualMethodNoOutputs      struct{}
@@ -129,8 +138,11 @@ type (
 	Ineligible_EqualMethodWrongOutput    struct{}
 )
 
-func (this Eligible1) Equal(that Eligible1) bool                                           { return this.a == that.a }
-func (this Eligible2) Equal(that Eligible2) bool                                           { return this.a == that.a }
+func (this Eligible1) Equal(that Eligible1) bool { return this.a == that.a }
+func (this Eligible2) Equal(that Eligible2) bool { return this.a == that.a }
+func (this EligibleAsymmetric) Equal(that EligibleAsymmetric) bool {
+	return this.a == 0
+}
 func (this Ineligible_EqualMethodNoInputs) Equal() bool                                    { return true }
 func (this Ineligible_EqualMethodNoOutputs) Equal(that Ineligible_EqualMethodNoOutputs)    {}
 func (this Ineligible_EqualMethodTooManyInputs) Equal(a, b bool) bool                      { return true }
