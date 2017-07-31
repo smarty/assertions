@@ -27,10 +27,10 @@ func newEqualityMethodSpecification(a, b interface{}) *equalityMethodSpecificati
 }
 
 func (this *equalityMethodSpecification) IsSatisfied() bool {
-	if !this.sameType() {
+	if !this.bothAreSameType() {
 		return false
 	}
-	if !this.hasEqualMethod() {
+	if !this.typeHasEqualMethod() {
 		return false
 	}
 	if !this.equalMethodReceivesSameTypeForComparison() {
@@ -42,7 +42,7 @@ func (this *equalityMethodSpecification) IsSatisfied() bool {
 	return true
 }
 
-func (this *equalityMethodSpecification) sameType() bool {
+func (this *equalityMethodSpecification) bothAreSameType() bool {
 	this.aType = reflect.TypeOf(this.a)
 	if this.aType.Kind() == reflect.Ptr {
 		this.aType = this.aType.Elem()
@@ -50,7 +50,7 @@ func (this *equalityMethodSpecification) sameType() bool {
 	this.bType = reflect.TypeOf(this.b)
 	return this.aType == this.bType
 }
-func (this *equalityMethodSpecification) hasEqualMethod() bool {
+func (this *equalityMethodSpecification) typeHasEqualMethod() bool {
 	aInstance := reflect.ValueOf(this.a)
 	this.equalMethod = aInstance.MethodByName("Equal")
 	return this.equalMethod != reflect.Value{}
