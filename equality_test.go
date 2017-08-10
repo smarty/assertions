@@ -80,8 +80,8 @@ func (this *AssertionsFixture) TestShouldAlmostEqual() {
 	this.fail(so("1", ShouldAlmostEqual, 1), "The actual value must be a numerical type, but was: string")
 
 	// with the default delta
-	//this.pass(so(.99999999999999, ShouldAlmostEqual, uint(1)))
-	//this.pass(so(1, ShouldAlmostEqual, .99999999999999))
+	this.pass(so(0.99999999999999, ShouldAlmostEqual, uint(1)))
+	this.pass(so(1, ShouldAlmostEqual, 0.99999999999999))
 	this.pass(so(1.3612499999999996, ShouldAlmostEqual, 1.36125))
 	this.pass(so(0.7285312499999999, ShouldAlmostEqual, 0.72853125))
 	this.fail(so(1, ShouldAlmostEqual, .99), "Expected '1' to almost equal '0.99' (but it didn't)!")
