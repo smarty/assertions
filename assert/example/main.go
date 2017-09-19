@@ -19,9 +19,9 @@ func exampleUsage(result *assert.Result) {
 		fmt.Println("The assertion passed.")
 	}
 
-	fmt.Print("\nAbout to see result.Err()...\n\n")
+	fmt.Print("\nAbout to see result.Error()...\n\n")
 
-	if err := result.Err(); err != nil {
+	if err := result.Error(); err != nil {
 		fmt.Println(err)
 	}
 

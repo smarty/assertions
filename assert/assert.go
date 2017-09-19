@@ -25,8 +25,8 @@ type Result struct {
 //    assert.So(1, should.Equal, 1).Log()     // Calls log.Print with the failure message and file:line header.
 //    assert.So(1, should.Equal, 1).Panic()   // Calls log.Panic with the failure message and file:line header.
 //    assert.So(1, should.Equal, 1).Fatal()   // Calls log.Fatal with the failure message and file:line header.
-//    if err := assert.So(1, should.Equal, 1).Err(); err != nil {
-//        // Handle the err, which will include the failure message and file:line header.
+//    if err := assert.So(1, should.Equal, 1).Error(); err != nil {
+//        // Handle the error, which will include the failure message and file:line header.
 //    }
 //
 func So(actual interface{}, assert func(interface{}, ...interface{}) string, expected ...interface{}) *Result {
@@ -50,7 +50,7 @@ func (this *Result) Passed() bool {
 }
 
 // Returns the error representing an assertion failure, which is nil in the case of a passed assertion.
-func (this *Result) Err() error {
+func (this *Result) Error() error {
 	return this.err
 }
 
