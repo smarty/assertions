@@ -13,10 +13,10 @@ func main() {
 }
 
 func exampleUsage(result *assert.Result) {
-	if result.Failed() {
-		fmt.Println("The assertion failed.")
-	} else if result.Passed() {
-		fmt.Println("The assertion passed.")
+	if result.Passed() {
+		fmt.Println("The assertion passed:", result)
+	} else if result.Failed() {
+		fmt.Println("The assertion failed:", result)
 	}
 
 	fmt.Print("\nAbout to see result.Error()...\n\n")
