@@ -47,6 +47,7 @@ func TestRenderList(t *testing.T) {
 	type myStringMap map[string]string
 	type myIntType int
 	type myStringType string
+	type myTypeWithTime struct{ Public, private time.Time }
 
 	s0 := "string0"
 	s0P := &s0
@@ -80,6 +81,7 @@ func TestRenderList(t *testing.T) {
 		{myIntType(12), `render.myIntType(12)`},
 		{&mit, `(*render.myIntType)(42)`},
 		{myStringType("foo"), `render.myStringType("foo")`},
+		{myTypeWithTime{}, `render.myTypeWithTime{Public:time.Time{0001-01-01 00:00:00 +0000 UTC}, private:time.Time{wall:0, ext:0, loc:(*time.Location)(nil)}}`},
 		{struct {
 			a int
 			b string
