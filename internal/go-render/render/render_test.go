@@ -49,6 +49,10 @@ func TestRenderList(t *testing.T) {
 	type myStringType string
 	type myTypeWithTime struct{ Public, private time.Time }
 
+	var date = time.Date(2000, 1, 1, 0, 0, 0, 0, time.UTC)
+	populatedTimes := myTypeWithTime{date, date}
+	zeroTimes := myTypeWithTime{}
+
 	s0 := "string0"
 	s0P := &s0
 	mit := myIntType(42)
@@ -81,7 +85,8 @@ func TestRenderList(t *testing.T) {
 		{myIntType(12), `render.myIntType(12)`},
 		{&mit, `(*render.myIntType)(42)`},
 		{myStringType("foo"), `render.myStringType("foo")`},
-		{myTypeWithTime{}, `render.myTypeWithTime{Public:time.Time{0001-01-01 00:00:00 +0000 UTC}, private:time.Time{wall:0, ext:0, loc:(*time.Location)(nil)}}`},
+		{zeroTimes, `render.myTypeWithTime{Public:time.Time{0}, private:time.Time{wall:0, ext:0, loc:(*time.Location)(nil)}}`},
+		{populatedTimes, `render.myTypeWithTime{Public:time.Time{2000-01-01 00:00:00 +0000 UTC}, private:time.Time{wall:0, ext:63082281600, loc:(*time.Location)(nil)}}`},
 		{struct {
 			a int
 			b string
