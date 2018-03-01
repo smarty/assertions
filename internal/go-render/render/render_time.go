@@ -19,8 +19,6 @@ func convertTime(value reflect.Value) (t time.Time, ok bool) {
 	if value.Type() == timeType {
 		defer func() { recover() }()
 		t, ok = value.Interface().(time.Time)
-	} else {
-		return
 	}
 	return
 }
