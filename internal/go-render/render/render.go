@@ -182,10 +182,10 @@ func (s *traverseState) render(buf *bytes.Buffer, ptrs int, v reflect.Value, imp
 		}
 		anon := vt.Name() == "" && isAnon(vt.Elem())
 		buf.WriteString("{")
+		if v.Len() > 0 {
+			buf.WriteString("\n")
+		}
 		for i := 0; i < v.Len(); i++ {
-			if i == 0 {
-				buf.WriteString("\n")
-			}
 			buf.WriteString("\t")
 			s.render(buf, 0, v.Index(i), anon)
 			buf.WriteString(",\n")
@@ -205,7 +205,10 @@ func (s *traverseState) render(buf *bytes.Buffer, ptrs int, v reflect.Value, imp
 			tryAndSortMapKeys(vt, mkeys)
 
 			kt := vt.Key()
-			keyAnon := typeOfString.ConvertibleTo(kt) || typeOfInt.ConvertibleTo(kt) || typeOfUint.ConvertibleTo(kt) || typeOfFloat.ConvertibleTo(kt)
+			keyAnon := typeOfString.ConvertibleTo(kt) ||
+				typeOfInt.ConvertibleTo(kt) ||
+				typeOfUint.ConvertibleTo(kt) ||
+				typeOfFloat.ConvertibleTo(kt)
 			valAnon := vt.Name() == "" && isAnon(vt.Elem())
 			for i, mk := range mkeys {
 				if i > 0 {
