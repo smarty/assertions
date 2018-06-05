@@ -1,6 +1,7 @@
 package assertions
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"math"
@@ -161,6 +162,30 @@ func ShouldResemble(actual interface{}, expected ...interface{}) string {
 	}
 
 	return success
+}
+
+// ShouldResemJSON receives exactly two parameters and does an equality check by marshalling to JSON
+func ShouldResembleJSON(actual interface{}, expected ...interface{}) string {
+	if message := need(1, expected); message != success {
+		return message
+	}
+
+	var unmarshaledExpected map[string]interface{}
+	_ = json.Unmarshal([]byte(expected[0].(string)), &unmarshaledExpected)
+	canonicalExpected, _ := json.Marshal(unmarshaledExpected)
+
+	var unmarshaledActual map[string]interface{}
+	_ = json.Unmarshal([]byte(actual.(string)), &unmarshaledActual)
+	canonicalActual, _ := json.Marshal(unmarshaledActual)
+
+	expectedString := string(canonicalExpected)
+	actualString := string(canonicalActual)
+
+	if expectedString == actualString {
+		return success
+	}
+
+	return fmt.Sprintf("expected %s, got %s", expectedString, actualString)
 }
 
 // ShouldNotResemble receives exactly two parameters and does an inverse deep equal check (see reflect.DeepEqual)
