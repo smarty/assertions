@@ -162,26 +162,26 @@ func (this *AssertionsFixture) TestShouldResembleJSON() {
 	this.fail(so("hi", ShouldResembleJSON, "hi", "hi"), "This assertion requires exactly 1 comparison values (you provided 2).")
 
 	// basic identity
-	this.pass(so("{\"my\":\"val\"}", ShouldResembleJSON, "{\"my\":\"val\"}"))
-	this.fail(so("{\"my\":\"val\"}", ShouldResembleJSON, "{\"your\":\"val\"}"), "expected {\"your\":\"val\"}, got {\"my\":\"val\"}")
+	this.pass(so(`{"my":"val"}`, ShouldResembleJSON, `{"my":"val"}`))
+	this.fail(so(`{"my":"val"}`, ShouldResembleJSON, `{"your":"val"}`), `expected {"your":"val"}, got {"my":"val"}`)
 
 	// out of order values
-	this.pass(so("{\"key0\":\"val0\",\"key1\":\"val1\"}", ShouldResembleJSON, "{\"key1\":\"val1\",\"key0\":\"val0\"}"))
+	this.pass(so(`{"key0":"val0","key1":"val1"}`, ShouldResembleJSON, `{"key1":"val1","key0":"val0"}`))
 	this.fail(so(
-		"{\"key0\":\"val0\",\"key1\":\"val1\"}",
+		`{"key0":"val0","key1":"val1"}`,
 		ShouldResembleJSON,
-		"{\"key1\":\"val0\",\"key0\":\"val0\"}"),
-		"expected {\"key0\":\"val0\",\"key1\":\"val0\"}, got {\"key0\":\"val0\",\"key1\":\"val1\"}")
+		`{"key1":"val0","key0":"val0"}`),
+		`expected {"key0":"val0","key1":"val0"}, got {"key0":"val0","key1":"val1"}`)
 
 	// missing values
 	this.fail(so(
-		"{\"key0\":\"val0\",\"key1\":\"val1\"}",
+		`{"key0":"val0","key1":"val1"}`,
 		ShouldResembleJSON,
-		"{\"key1\":\"val0\"}"),
-		"expected {\"key1\":\"val0\"}, got {\"key0\":\"val0\",\"key1\":\"val1\"}")
+		`{"key1":"val0"}`),
+		`expected {"key1":"val0"}, got {"key0":"val0","key1":"val1"}`)
 
 	// whitespace
-	this.pass(so("\n{ \"my\"  :   \"val\"\n}", ShouldResembleJSON, "{\"my\":\"val\"}"))
+	this.pass(so(`\n{ "my"  :   "val"\n}`, ShouldResembleJSON, `{"my":"val"}`))
 }
 
 func (this *AssertionsFixture) TestShouldNotResemble() {
