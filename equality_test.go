@@ -157,28 +157,26 @@ func (this *AssertionsFixture) TestShouldResemble() {
 	this.fail(so(IntAlias(42), ShouldResemble, 42), `42|42|Expected: '42' Actual: 'assertions.IntAlias(42)' (Should resemble)!`)
 }
 
-func (this *AssertionsFixture) TestShouldResembleJSON() {
-	this.fail(so("hi", ShouldResembleJSON), "This assertion requires exactly 1 comparison values (you provided 0).")
-	this.fail(so("hi", ShouldResembleJSON, "hi", "hi"), "This assertion requires exactly 1 comparison values (you provided 2).")
+func (this *AssertionsFixture) TestShouldEqualJSON() {
+	this.fail(so("hi", ShouldEqualJSON), "This assertion requires exactly 1 comparison values (you provided 0).")
+	this.fail(so("hi", ShouldEqualJSON, "hi", "hi"), "This assertion requires exactly 1 comparison values (you provided 2).")
 
-	// basic identity
-	this.pass(so(`{"my":"val"}`, ShouldResembleJSON, `{"my":"val"}`))
-	this.fail(so(`{"my":"val"}`, ShouldResembleJSON, `{"your":"val"}`), `expected {"your":"val"}, got {"my":"val"}`)
+	// basic identity of keys/values
+	this.pass(so(`{"my":"val"}`, ShouldEqualJSON, `{"my":"val"}`))
+	this.fail(so(`{"my":"val"}`, ShouldEqualJSON, `{"your":"val"}`),
+		`{"your":"val"}|{"my":"val"}|Expected: '{"your":"val"}' Actual: '{"my":"val"}' (Should be equal)`)
 
-	// out of order values
-	this.pass(so(`{"key0":"val0","key1":"val1"}`, ShouldResembleJSON, `{"key1":"val1","key0":"val0"}`))
+	// out of order values causes comparison failure:
+	this.pass(so(`{"key0":"val0","key1":"val1"}`, ShouldEqualJSON, `{"key1":"val1","key0":"val0"}`))
+	this.fail(so(`{"key0":"val0","key1":"val1"}`, ShouldEqualJSON, `{"key1":"val0","key0":"val0"}`),
+		`{"key0":"val0","key1":"val0"}|{"key0":"val0","key1":"val1"}|Expected: '{"key0":"val0","key1":"val0"}' Actual: '{"key0":"val0","key1":"val1"}' (Should be equal)`)
+
+	// missing values causes comparison failure:
 	this.fail(so(
 		`{"key0":"val0","key1":"val1"}`,
-		ShouldResembleJSON,
-		`{"key1":"val0","key0":"val0"}`),
-		`expected {"key0":"val0","key1":"val0"}, got {"key0":"val0","key1":"val1"}`)
-
-	// missing values
-	this.fail(so(
-		`{"key0":"val0","key1":"val1"}`,
-		ShouldResembleJSON,
+		ShouldEqualJSON,
 		`{"key1":"val0"}`),
-		`expected {"key1":"val0"}, got {"key0":"val0","key1":"val1"}`)
+		`{"key1":"val0"}|{"key0":"val0","key1":"val1"}|Expected: '{"key1":"val0"}' Actual: '{"key0":"val0","key1":"val1"}' (Should be equal)`)
 
 	// whitespace shouldn't matter:
 	this.pass(so("\n{ \"my\"  :   \"val\"\n}", ShouldEqualJSON, `{"my":"val"}`))

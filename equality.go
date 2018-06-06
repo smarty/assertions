@@ -164,8 +164,9 @@ func ShouldResemble(actual interface{}, expected ...interface{}) string {
 	return success
 }
 
-// ShouldResemJSON receives exactly two parameters and does an equality check by marshalling to JSON
-func ShouldResembleJSON(actual interface{}, expected ...interface{}) string {
+
+// ShouldEqualJSON receives exactly two parameters and does an equality check by marshalling to JSON
+func ShouldEqualJSON(actual interface{}, expected ...interface{}) string {
 	if message := need(1, expected); message != success {
 		return message
 	}
@@ -181,11 +182,7 @@ func ShouldResembleJSON(actual interface{}, expected ...interface{}) string {
 	expectedString := string(canonicalExpected)
 	actualString := string(canonicalActual)
 
-	if expectedString == actualString {
-		return success
-	}
-
-	return fmt.Sprintf("expected %s, got %s", expectedString, actualString)
+	return ShouldEqual(actualString, expectedString)
 }
 
 // ShouldNotResemble receives exactly two parameters and does an inverse deep equal check (see reflect.DeepEqual)
