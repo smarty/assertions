@@ -156,18 +156,16 @@ func ShouldEqualJSON(actual interface{}, expected ...interface{}) string {
 		return message
 	}
 
-	var unmarshaledExpected map[string]interface{}
-	_ = json.Unmarshal([]byte(expected[0].(string)), &unmarshaledExpected)
-	canonicalExpected, _ := json.Marshal(unmarshaledExpected)
-
-	var unmarshaledActual map[string]interface{}
-	_ = json.Unmarshal([]byte(actual.(string)), &unmarshaledActual)
-	canonicalActual, _ := json.Marshal(unmarshaledActual)
-
-	expectedString := string(canonicalExpected)
-	actualString := string(canonicalActual)
+	expectedString := remarshal(expected[0].(string))
+	actualString := remarshal(actual.(string))
 
 	return ShouldEqual(actualString, expectedString)
+}
+func remarshal(value string) string {
+	var structured map[string]interface{}
+	json.Unmarshal([]byte(value), &structured)
+	canonical, _ := json.Marshal(structured)
+	return string(canonical)
 }
 
 
