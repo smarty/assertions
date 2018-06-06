@@ -150,21 +150,6 @@ func getFloat(num interface{}) (float64, error) {
 	}
 }
 
-// ShouldResemble receives exactly two parameters and does a deep equal check (see reflect.DeepEqual)
-func ShouldResemble(actual interface{}, expected ...interface{}) string {
-	if message := need(1, expected); message != success {
-		return message
-	}
-
-	if matchError := oglematchers.DeepEquals(expected[0]).Matches(actual); matchError != nil {
-		return serializer.serializeDetailed(expected[0], actual,
-			fmt.Sprintf(shouldHaveResembled, render.Render(expected[0]), render.Render(actual)))
-	}
-
-	return success
-}
-
-
 // ShouldEqualJSON receives exactly two parameters and does an equality check by marshalling to JSON
 func ShouldEqualJSON(actual interface{}, expected ...interface{}) string {
 	if message := need(1, expected); message != success {
@@ -183,6 +168,21 @@ func ShouldEqualJSON(actual interface{}, expected ...interface{}) string {
 	actualString := string(canonicalActual)
 
 	return ShouldEqual(actualString, expectedString)
+}
+
+
+// ShouldResemble receives exactly two parameters and does a deep equal check (see reflect.DeepEqual)
+func ShouldResemble(actual interface{}, expected ...interface{}) string {
+	if message := need(1, expected); message != success {
+		return message
+	}
+
+	if matchError := oglematchers.DeepEquals(expected[0]).Matches(actual); matchError != nil {
+		return serializer.serializeDetailed(expected[0], actual,
+			fmt.Sprintf(shouldHaveResembled, render.Render(expected[0]), render.Render(actual)))
+	}
+
+	return success
 }
 
 // ShouldNotResemble receives exactly two parameters and does an inverse deep equal check (see reflect.DeepEqual)
