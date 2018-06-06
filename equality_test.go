@@ -180,8 +180,8 @@ func (this *AssertionsFixture) TestShouldResembleJSON() {
 		`{"key1":"val0"}`),
 		`expected {"key1":"val0"}, got {"key0":"val0","key1":"val1"}`)
 
-	// whitespace
-	this.pass(so(`\n{ "my"  :   "val"\n}`, ShouldResembleJSON, `{"my":"val"}`))
+	// whitespace shouldn't matter:
+	this.pass(so("\n{ \"my\"  :   \"val\"\n}", ShouldEqualJSON, `{"my":"val"}`))
 }
 
 func (this *AssertionsFixture) TestShouldNotResemble() {
