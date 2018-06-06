@@ -156,18 +156,27 @@ func ShouldEqualJSON(actual interface{}, expected ...interface{}) string {
 		return message
 	}
 
-	expectedString := remarshal(expected[0].(string))
-	actualString := remarshal(actual.(string))
+	expectedString, expectedErr := remarshal(expected[0].(string))
+	if expectedErr != nil {
+		return "Expected value not valid JSON: " + expectedErr.Error()
+	}
+
+	actualString, actualErr := remarshal(actual.(string))
+	if actualErr != nil {
+		return "Actual value not valid JSON: " + actualErr.Error()
+	}
 
 	return ShouldEqual(actualString, expectedString)
 }
-func remarshal(value string) string {
+func remarshal(value string) (string, error) {
 	var structured map[string]interface{}
-	json.Unmarshal([]byte(value), &structured)
+	err := json.Unmarshal([]byte(value), &structured)
+	if err != nil {
+		return "", err
+	}
 	canonical, _ := json.Marshal(structured)
-	return string(canonical)
+	return string(canonical), nil
 }
-
 
 // ShouldResemble receives exactly two parameters and does a deep equal check (see reflect.DeepEqual)
 func ShouldResemble(actual interface{}, expected ...interface{}) string {

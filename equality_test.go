@@ -180,6 +180,10 @@ func (this *AssertionsFixture) TestShouldEqualJSON() {
 
 	// whitespace shouldn't interfere with comparison:
 	this.pass(so("\n{ \"my\"  :   \"val\"\n}", ShouldEqualJSON, `{"my":"val"}`))
+
+	// Invalid JSON for either actual or expected value is invalid:
+	this.fail(so("{}", ShouldEqualJSON, ""), "Expected value not valid JSON: unexpected end of JSON input")
+	this.fail(so("", ShouldEqualJSON, "{}"), "Actual value not valid JSON: unexpected end of JSON input")
 }
 
 func (this *AssertionsFixture) TestShouldNotResemble() {
