@@ -178,7 +178,7 @@ func (this *AssertionsFixture) TestShouldEqualJSON() {
 		`{"key1":"val0"}`),
 		`{"key1":"val0"}|{"key0":"val0","key1":"val1"}|Expected: '{"key1":"val0"}' Actual: '{"key0":"val0","key1":"val1"}' (Should be equal)`)
 
-	// whitespace shouldn't matter:
+	// whitespace shouldn't interfere with comparison:
 	this.pass(so("\n{ \"my\"  :   \"val\"\n}", ShouldEqualJSON, `{"my":"val"}`))
 }
 
