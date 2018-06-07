@@ -1,6 +1,7 @@
 package assertions
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"math"
@@ -147,6 +148,34 @@ func getFloat(num interface{}) (float64, error) {
 	} else {
 		return 0.0, errors.New("must be a numerical type, but was: " + numKind.String())
 	}
+}
+
+// ShouldEqualJSON receives exactly two parameters and does an equality check by marshalling to JSON
+func ShouldEqualJSON(actual interface{}, expected ...interface{}) string {
+	if message := need(1, expected); message != success {
+		return message
+	}
+
+	expectedString, expectedErr := remarshal(expected[0].(string))
+	if expectedErr != nil {
+		return "Expected value not valid JSON: " + expectedErr.Error()
+	}
+
+	actualString, actualErr := remarshal(actual.(string))
+	if actualErr != nil {
+		return "Actual value not valid JSON: " + actualErr.Error()
+	}
+
+	return ShouldEqual(actualString, expectedString)
+}
+func remarshal(value string) (string, error) {
+	var structured map[string]interface{}
+	err := json.Unmarshal([]byte(value), &structured)
+	if err != nil {
+		return "", err
+	}
+	canonical, _ := json.Marshal(structured)
+	return string(canonical), nil
 }
 
 // ShouldResemble receives exactly two parameters and does a deep equal check (see reflect.DeepEqual)
