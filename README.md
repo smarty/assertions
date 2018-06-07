@@ -372,6 +372,14 @@ func ShouldNotBeNil(actual interface{}, expected ...interface{}) string
 ```
 ShouldNotBeNil receives a single parameter and ensures that it is not nil.
 
+#### func  ShouldNotBeZeroValue
+
+```go
+func ShouldNotBeZeroValue(actual interface{}, expected ...interface{}) string
+```
+ShouldBeZeroValue receives a single parameter and ensures that it is NOT the Go
+equivalent of the default value, or "zero" value.
+
 #### func  ShouldNotContain
 
 ```go

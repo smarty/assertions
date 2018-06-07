@@ -19,6 +19,7 @@ var (
 	BeTrue         = assertions.ShouldBeTrue
 	BeFalse        = assertions.ShouldBeFalse
 	BeZeroValue    = assertions.ShouldBeZeroValue
+	NotBeZeroValue = assertions.ShouldNotBeZeroValue
 
 	BeGreaterThan          = assertions.ShouldBeGreaterThan
 	BeGreaterThanOrEqualTo = assertions.ShouldBeGreaterThanOrEqualTo

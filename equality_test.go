@@ -324,3 +324,20 @@ func (this *AssertionsFixture) TestShouldBeZeroValue() {
 	this.pass(so("", ShouldBeZeroValue))
 	this.pass(so(struct{}{}, ShouldBeZeroValue))
 }
+
+func (this *AssertionsFixture) TestShouldNotBeZeroValue() {
+	this.fail(so(0, ShouldNotBeZeroValue, 1, 2, 3), "This assertion requires exactly 0 comparison values (you provided 3).")
+	this.fail(so(false, ShouldNotBeZeroValue, true), "This assertion requires exactly 0 comparison values (you provided 1).")
+
+	this.fail(so(0, ShouldNotBeZeroValue), "0|0|'0' should NOT have been the zero value")
+	this.fail(so(false, ShouldNotBeZeroValue), "false|false|'false' should NOT have been the zero value")
+	this.fail(so("", ShouldNotBeZeroValue), "||'' should NOT have been the zero value")
+	this.fail(so(struct{}{}, ShouldNotBeZeroValue), "{}|{}|'{}' should NOT have been the zero value")
+
+	this.pass(so(1, ShouldNotBeZeroValue))
+	this.pass(so(true, ShouldNotBeZeroValue))
+	this.pass(so("123", ShouldNotBeZeroValue))
+	this.pass(so(" ", ShouldNotBeZeroValue))
+	this.pass(so([]string{"Nonempty"}, ShouldNotBeZeroValue))
+	this.pass(so(struct{ a string }{a: "asdf"}, ShouldNotBeZeroValue))
+}
