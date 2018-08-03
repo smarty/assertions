@@ -1,7 +1,7 @@
 // package unit implements a light-weight x-Unit style testing framework.
 // It is basically a scaled-down version of github.com/smartystreets/gunit.
 // See https://smartystreets.com/blog/2018/07/lets-build-xunit-in-go for
-// an explanation if the basic moving parts.
+// an explanation of the basic moving parts.
 package unit
 
 import (
