@@ -163,7 +163,7 @@ func ShouldEqualJSON(actual interface{}, expected ...interface{}) string {
 	return ShouldEqual(actualString, expectedString)
 }
 func remarshal(value string) (string, error) {
-	var structured map[string]interface{}
+	var structured interface{}
 	err := json.Unmarshal([]byte(value), &structured)
 	if err != nil {
 		return "", err

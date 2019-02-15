@@ -184,6 +184,16 @@ func (this *AssertionsFixture) TestShouldEqualJSON() {
 	// Invalid JSON for either actual or expected value is invalid:
 	this.fail(so("{}", ShouldEqualJSON, ""), "Expected value not valid JSON: unexpected end of JSON input")
 	this.fail(so("", ShouldEqualJSON, "{}"), "Actual value not valid JSON: unexpected end of JSON input")
+
+	// Support JSON array:
+	this.pass(so("[]", ShouldEqualJSON, "[]"))
+
+	// Support any JSON value:
+	this.pass(so(`"hi"`, ShouldEqualJSON, `"hi"`))
+	this.pass(so(`42`, ShouldEqualJSON, `42`))
+	this.pass(so(`true`, ShouldEqualJSON, `true`))
+	this.pass(so(`false`, ShouldEqualJSON, `false`))
+	this.pass(so(`null`, ShouldEqualJSON, `null`))
 }
 
 func (this *AssertionsFixture) TestShouldNotResemble() {
