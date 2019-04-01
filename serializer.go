@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/sergi/go-diff/diffmatchpatch"
 	"github.com/smartystreets/assertions/internal/go-render/render"
 )
 
@@ -61,35 +60,4 @@ func (self *noopSerializer) serialize(expected, actual interface{}, message stri
 }
 func (self *noopSerializer) serializeDetailed(expected, actual interface{}, message string) string {
 	return message
-}
-
-func diff(expected, actual interface{}) string {
-	diff := diffmatchpatch.New()
-	diffs := diff.DiffMain(fmt.Sprintf("%v", expected), fmt.Sprintf("%v", actual), false)
-	if !canDiff(diffs) {
-		return ""
-	}
-	return fmt.Sprintf("\nDiff:     '%s'", diff.DiffPrettyText(diffs))
-}
-
-// canDiff returns true if the diff listing represents more equal segments than deleted/inserted segments.
-func canDiff(diffs []diffmatchpatch.Diff) bool {
-	var (
-		equal    int
-		deleted  int
-		inserted int
-	)
-
-	for _, diff := range diffs {
-		switch diff.Type {
-		case diffmatchpatch.DiffEqual:
-			equal += len(diff.Text)
-		case diffmatchpatch.DiffDelete:
-			deleted += len(diff.Text)
-		case diffmatchpatch.DiffInsert:
-			inserted += len(diff.Text)
-		}
-	}
-
-	return equal > deleted && equal > inserted
 }
