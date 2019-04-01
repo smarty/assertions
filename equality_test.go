@@ -157,6 +157,20 @@ func (this *AssertionsFixture) TestShouldResemble() {
 	this.fail(so(IntAlias(42), ShouldResemble, 42), `42|42|Expected: '42' Actual: 'assertions.IntAlias(42)' (Should resemble)!`)
 }
 
+func (this *AssertionsFixture) TestShouldNotResemble() {
+	this.fail(so(Thing1{"hi"}, ShouldNotResemble), "This assertion requires exactly 1 comparison values (you provided 0).")
+	this.fail(so(Thing1{"hi"}, ShouldNotResemble, Thing1{"hi"}, Thing1{"hi"}), "This assertion requires exactly 1 comparison values (you provided 2).")
+
+	this.pass(so(Thing1{"hi"}, ShouldNotResemble, Thing1{"bye"}))
+	this.fail(so(Thing1{"hi"}, ShouldNotResemble, Thing1{"hi"}),
+		`Expected '"assertions.Thing1{a:\"hi\"}"' to NOT resemble '"assertions.Thing1{a:\"hi\"}"' (but it did)!`)
+
+	this.pass(so(map[string]string{"hi": "bye"}, ShouldResemble, map[string]string{"hi": "bye"}))
+	this.pass(so(IntAlias(42), ShouldNotResemble, 42))
+
+	this.pass(so(StringSliceAlias{"hi", "bye"}, ShouldNotResemble, []string{"hi", "bye"}))
+}
+
 func (this *AssertionsFixture) TestShouldEqualJSON() {
 	this.fail(so("hi", ShouldEqualJSON), "This assertion requires exactly 1 comparison values (you provided 0).")
 	this.fail(so("hi", ShouldEqualJSON, "hi", "hi"), "This assertion requires exactly 1 comparison values (you provided 2).")
@@ -194,20 +208,6 @@ func (this *AssertionsFixture) TestShouldEqualJSON() {
 	this.pass(so(`true`, ShouldEqualJSON, `true`))
 	this.pass(so(`false`, ShouldEqualJSON, `false`))
 	this.pass(so(`null`, ShouldEqualJSON, `null`))
-}
-
-func (this *AssertionsFixture) TestShouldNotResemble() {
-	this.fail(so(Thing1{"hi"}, ShouldNotResemble), "This assertion requires exactly 1 comparison values (you provided 0).")
-	this.fail(so(Thing1{"hi"}, ShouldNotResemble, Thing1{"hi"}, Thing1{"hi"}), "This assertion requires exactly 1 comparison values (you provided 2).")
-
-	this.pass(so(Thing1{"hi"}, ShouldNotResemble, Thing1{"bye"}))
-	this.fail(so(Thing1{"hi"}, ShouldNotResemble, Thing1{"hi"}),
-		`Expected '"assertions.Thing1{a:\"hi\"}"' to NOT resemble '"assertions.Thing1{a:\"hi\"}"' (but it did)!`)
-
-	this.pass(so(map[string]string{"hi": "bye"}, ShouldResemble, map[string]string{"hi": "bye"}))
-	this.pass(so(IntAlias(42), ShouldNotResemble, 42))
-
-	this.pass(so(StringSliceAlias{"hi", "bye"}, ShouldNotResemble, []string{"hi", "bye"}))
 }
 
 func (this *AssertionsFixture) TestShouldPointTo() {
