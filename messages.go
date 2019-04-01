@@ -94,4 +94,5 @@ const ( // time comparisons
 
 	// format params: incorrect-index, previous-index, previous-time, incorrect-index, incorrect-time
 	shouldHaveBeenChronological = "The 'Time' at index [%d] should have happened after the previous one (but it didn't!):\n  [%d]: %s\n  [%d]: %s (see, it happened before!)"
+	shouldNotHaveBeenchronological = "The provided times should NOT be chronological, but they were."
 )
