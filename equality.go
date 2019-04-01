@@ -26,7 +26,7 @@ func ShouldEqual(actual interface{}, expected ...interface{}) string {
 func shouldEqual(actual, expected interface{}) (message string) {
 	defer func() {
 		if r := recover(); r != nil {
-			message = serializer.serialize(expected, actual, fmt.Sprintf(shouldHaveBeenEqual, expected, actual))
+			message = serializer.serialize(expected, actual, composeEqualityMismatchMessage(expected, actual))
 		}
 	}()
 
@@ -39,10 +39,17 @@ func shouldEqual(actual, expected interface{}) (message string) {
 	return serializer.serialize(expected, actual, composeEqualityMismatchMessage(expected, actual))
 }
 func composeEqualityMismatchMessage(expected, actual interface{}) string {
-	if fmt.Sprintf("%v", expected) == fmt.Sprintf("%v", actual) && reflect.TypeOf(expected) != reflect.TypeOf(actual) {
+	var (
+		renderedExpected = fmt.Sprintf("%v", expected)
+		renderedActual   = fmt.Sprintf("%v", actual)
+	)
+
+	if renderedExpected != renderedActual {
+		return fmt.Sprintf(shouldHaveBeenEqual+composePrettyDiff(renderedExpected, renderedActual), expected, actual)
+	} else if reflect.TypeOf(expected) != reflect.TypeOf(actual) {
 		return fmt.Sprintf(shouldHaveBeenEqualTypeMismatch, expected, expected, actual, actual)
 	} else {
-		return fmt.Sprintf(shouldHaveBeenEqual, expected, actual)
+		return fmt.Sprintf(shouldHaveBeenEqualNoResemblance, renderedExpected)
 	}
 }
 
@@ -179,8 +186,10 @@ func ShouldResemble(actual interface{}, expected ...interface{}) string {
 	}
 
 	if matchError := oglematchers.DeepEquals(expected[0]).Matches(actual); matchError != nil {
-		return serializer.serializeDetailed(expected[0], actual,
-			fmt.Sprintf(shouldHaveResembled, render.Render(expected[0]), render.Render(actual)))
+		renderedExpected, renderedActual := render.Render(expected[0]), render.Render(actual)
+		message := fmt.Sprintf(shouldHaveResembled, renderedExpected, renderedActual) +
+			composePrettyDiff(renderedExpected, renderedActual)
+		return serializer.serializeDetailed(expected[0], actual, message)
 	}
 
 	return success
