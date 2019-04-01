@@ -1,23 +1,24 @@
 package assertions
 
 const ( // equality
-	shouldHaveBeenEqual             = "Expected: '%v'\nActual:   '%v'\n(Should be equal)"
-	shouldNotHaveBeenEqual          = "Expected     '%v'\nto NOT equal '%v'\n(but it did)!"
-	shouldHaveBeenEqualTypeMismatch = "Expected: '%v' (%T)\nActual:   '%v' (%T)\n(Should be equal, type mismatch)"
-	shouldHaveBeenAlmostEqual       = "Expected '%v' to almost equal '%v' (but it didn't)!"
-	shouldHaveNotBeenAlmostEqual    = "Expected '%v' to NOT almost equal '%v' (but it did)!"
-	shouldHaveResembled             = "Expected: '%s'\nActual:   '%s'\n(Should resemble)!"
-	shouldNotHaveResembled          = "Expected        '%#v'\nto NOT resemble '%#v'\n(but it did)!"
-	shouldBePointers                = "Both arguments should be pointers "
-	shouldHaveBeenNonNilPointer     = shouldBePointers + "(the %s was %s)!"
-	shouldHavePointedTo             = "Expected '%+v' (address: '%v') and '%+v' (address: '%v') to be the same address (but their weren't)!"
-	shouldNotHavePointedTo          = "Expected '%+v' and '%+v' to be different references (but they matched: '%v')!"
-	shouldHaveBeenNil               = "Expected: nil\nActual:   '%v'"
-	shouldNotHaveBeenNil            = "Expected '%+v' to NOT be nil (but it was)!"
-	shouldHaveBeenTrue              = "Expected: true\nActual:   %v"
-	shouldHaveBeenFalse             = "Expected: false\nActual:   %v"
-	shouldHaveBeenZeroValue         = "'%+v' should have been the zero value" //"Expected: (zero value)\nActual:   %v"
-	shouldNotHaveBeenZeroValue      = "'%+v' should NOT have been the zero value"
+	shouldHaveBeenEqual              = "Expected: '%v'\nActual:   '%v'\n(Should be equal)"
+	shouldHaveBeenEqualNoResemblance = "Both the actual and expected values render equally ('%s') and their types are the same. Try using ShouldResemble instead."
+	shouldNotHaveBeenEqual           = "Expected     '%v'\nto NOT equal '%v'\n(but it did)!"
+	shouldHaveBeenEqualTypeMismatch  = "Expected: '%v' (%T)\nActual:   '%v' (%T)\n(Should be equal, type mismatch)"
+	shouldHaveBeenAlmostEqual        = "Expected '%v' to almost equal '%v' (but it didn't)!"
+	shouldHaveNotBeenAlmostEqual     = "Expected '%v' to NOT almost equal '%v' (but it did)!"
+	shouldHaveResembled              = "Expected: '%s'\nActual:   '%s'\n(Should resemble)!"
+	shouldNotHaveResembled           = "Expected        '%#v'\nto NOT resemble '%#v'\n(but it did)!"
+	shouldBePointers                 = "Both arguments should be pointers "
+	shouldHaveBeenNonNilPointer      = shouldBePointers + "(the %s was %s)!"
+	shouldHavePointedTo              = "Expected '%+v' (address: '%v') and '%+v' (address: '%v') to be the same address (but their weren't)!"
+	shouldNotHavePointedTo           = "Expected '%+v' and '%+v' to be different references (but they matched: '%v')!"
+	shouldHaveBeenNil                = "Expected: nil\nActual:   '%v'"
+	shouldNotHaveBeenNil             = "Expected '%+v' to NOT be nil (but it was)!"
+	shouldHaveBeenTrue               = "Expected: true\nActual:   %v"
+	shouldHaveBeenFalse              = "Expected: false\nActual:   %v"
+	shouldHaveBeenZeroValue          = "'%+v' should have been the zero value" //"Expected: (zero value)\nActual:   %v"
+	shouldNotHaveBeenZeroValue       = "'%+v' should NOT have been the zero value"
 )
 
 const ( // quantity comparisons
@@ -93,6 +94,6 @@ const ( // time comparisons
 	shouldNotHaveHappenedOnOrBetween = "Expected '%v' to NOT happen on or between '%v' and '%v' (but it did)!"
 
 	// format params: incorrect-index, previous-index, previous-time, incorrect-index, incorrect-time
-	shouldHaveBeenChronological = "The 'Time' at index [%d] should have happened after the previous one (but it didn't!):\n  [%d]: %s\n  [%d]: %s (see, it happened before!)"
+	shouldHaveBeenChronological    = "The 'Time' at index [%d] should have happened after the previous one (but it didn't!):\n  [%d]: %s\n  [%d]: %s (see, it happened before!)"
 	shouldNotHaveBeenchronological = "The provided times should NOT be chronological, but they were."
 )

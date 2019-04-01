@@ -26,8 +26,7 @@ func ShouldEqual(actual interface{}, expected ...interface{}) string {
 func shouldEqual(actual, expected interface{}) (message string) {
 	defer func() {
 		if r := recover(); r != nil {
-			diff := fmt.Sprintf(shouldHaveBeenEqual, expected, actual) + diff(expected, actual)
-			message = serializer.serialize(expected, actual, diff)
+			message = serializer.serialize(expected, actual, composeEqualityMismatchMessage(expected, actual))
 		}
 	}()
 
@@ -40,10 +39,17 @@ func shouldEqual(actual, expected interface{}) (message string) {
 	return serializer.serialize(expected, actual, composeEqualityMismatchMessage(expected, actual))
 }
 func composeEqualityMismatchMessage(expected, actual interface{}) string {
-	if fmt.Sprintf("%v", expected) == fmt.Sprintf("%v", actual) && reflect.TypeOf(expected) != reflect.TypeOf(actual) {
+	var (
+		renderedExpected = fmt.Sprintf("%v", expected)
+		renderedActual   = fmt.Sprintf("%v", actual)
+	)
+
+	if renderedExpected != renderedActual {
+		return fmt.Sprintf(shouldHaveBeenEqual+composePrettyDiff(renderedExpected, renderedActual), expected, actual)
+	} else if reflect.TypeOf(expected) != reflect.TypeOf(actual) {
 		return fmt.Sprintf(shouldHaveBeenEqualTypeMismatch, expected, expected, actual, actual)
 	} else {
-		return fmt.Sprintf(shouldHaveBeenEqual+diff(expected, actual), expected, actual)
+		return fmt.Sprintf(shouldHaveBeenEqualNoResemblance, renderedExpected)
 	}
 }
 
@@ -180,10 +186,10 @@ func ShouldResemble(actual interface{}, expected ...interface{}) string {
 	}
 
 	if matchError := oglematchers.DeepEquals(expected[0]).Matches(actual); matchError != nil {
-		message := fmt.Sprintf(shouldHaveResembled, render.Render(expected[0]), render.Render(actual))
-		message += diff(expected, actual)
-		return serializer.serializeDetailed(expected[0], actual,
-			message)
+		renderedExpected, renderedActual := render.Render(expected[0]), render.Render(actual)
+		message := fmt.Sprintf(shouldHaveResembled, renderedExpected, renderedActual) +
+			composePrettyDiff(renderedExpected, renderedActual)
+		return serializer.serializeDetailed(expected[0], actual, message)
 	}
 
 	return success

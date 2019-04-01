@@ -3,7 +3,7 @@ package assertions
 import (
 	"fmt"
 
-	"github.com/sergi/go-diff/diffmatchpatch"
+	"github.com/smartystreets/assertions/internal/go-diff/diffmatchpatch"
 )
 
 func composePrettyDiff(expected, actual string) string {
