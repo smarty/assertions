@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/smartystreets/assertions.svg?branch=master)](https://travis-ci.org/smartystreets/assertions)
+[![codecov](https://codecov.io/gh/smartystreets/assertions/branch/master/graph/badge.svg)](https://codecov.io/gh/smartystreets/assertions)
 
 # assertions
 --
