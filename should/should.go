@@ -67,4 +67,5 @@ var (
 	PointTo                = assertions.ShouldPointTo
 	Resemble               = assertions.ShouldResemble
 	StartWith              = assertions.ShouldStartWith
+	Wrap                   = assertions.ShouldWrap
 )

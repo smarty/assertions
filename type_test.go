@@ -3,6 +3,7 @@ package assertions
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 )
@@ -87,4 +88,22 @@ func (this *AssertionsFixture) TestShouldBeError() {
 	this.pass(so(error1, ShouldBeError))
 	this.pass(so(error1, ShouldBeError, error1))
 	this.pass(so(error1, ShouldBeError, error1.Error()))
+}
+
+func (this *AssertionsFixture) TestShouldWrapError() {
+	inner := fmt.Errorf("inner")
+	middle := fmt.Errorf("middle(%w)", inner)
+	outer := fmt.Errorf("outer(%w)", middle)
+
+	this.fail(so(outer, ShouldWrap, "too", "many"), "This assertion requires exactly 1 comparison values (you provided 2).")
+	this.fail(so(outer, ShouldWrap), "This assertion requires exactly 1 comparison values (you provided 0).")
+
+	this.fail(so(42, ShouldWrap, 42), "The first and last arguments to this assertion must both be error values (you provided: 'int' and 'int').")
+	this.fail(so(inner, ShouldWrap, 42), "The first and last arguments to this assertion must both be error values (you provided: '*errors.errorString' and 'int').")
+	this.fail(so(42, ShouldWrap, inner), "The first and last arguments to this assertion must both be error values (you provided: 'int' and '*errors.errorString').")
+
+	this.fail(so(inner, ShouldWrap, outer), `Expected error("inner") to wrap error("outer(middle(inner))") but it didn't.`)
+	this.pass(so(middle, ShouldWrap, inner))
+	this.pass(so(outer, ShouldWrap, middle))
+	this.pass(so(outer, ShouldWrap, inner))
 }

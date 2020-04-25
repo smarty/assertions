@@ -91,6 +91,8 @@ const (
 	shouldBeError                       = "Expected an error value (but was '%v' instead)!"
 	shouldBeErrorInvalidComparisonValue = "The final argument to this assertion must be a string or an error value (you provided: '%v')."
 
+	shouldWrapInvalidTypes = "The first and last arguments to this assertion must both be error values (you provided: '%v' and '%v')."
+
 	shouldUseTimes           = "You must provide time instances as arguments to this assertion."
 	shouldUseTimeSlice       = "You must provide a slice of time instances as the first argument to this assertion."
 	shouldUseDurationAndTime = "You must provide a duration and a time as arguments to this assertion."
