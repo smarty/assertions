@@ -1,6 +1,9 @@
 package assertions
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 func (this *AssertionsFixture) TestShouldPanic() {
 	this.fail(so(func() {}, ShouldPanic, 1), "This assertion requires exactly 0 comparison values (you provided 1).")
@@ -33,8 +36,10 @@ func (this *AssertionsFixture) TestShouldPanicWith() {
 	this.fail(so(func(i int) {}, ShouldPanicWith, "hi"), shouldUseVoidNiladicFunction)
 	this.fail(so(func() {}, ShouldPanicWith, "bye"), shouldHavePanicked)
 	this.fail(so(func() { panic("hi") }, ShouldPanicWith, "bye"), "bye|hi|Expected func() to panic with 'bye' (but it panicked with 'hi')!")
+	this.fail(so(func() { panic(errInner) }, ShouldPanicWith, errOuter), "outer inner|inner|Expected func() to panic with 'outer inner' (but it panicked with 'inner')!")
 
 	this.pass(so(func() { panic("hi") }, ShouldPanicWith, "hi"))
+	this.pass(so(func() { panic(errOuter) }, ShouldPanicWith, errInner))
 }
 
 func (this *AssertionsFixture) TestShouldNotPanicWith() {
@@ -44,7 +49,15 @@ func (this *AssertionsFixture) TestShouldNotPanicWith() {
 	this.fail(so(1, ShouldNotPanicWith, 1), shouldUseVoidNiladicFunction)
 	this.fail(so(func(i int) {}, ShouldNotPanicWith, "hi"), shouldUseVoidNiladicFunction)
 	this.fail(so(func() { panic("hi") }, ShouldNotPanicWith, "hi"), "Expected func() NOT to panic with 'hi' (but it did)!")
+	this.fail(so(func() { panic(errOuter) }, ShouldNotPanicWith, errInner), "Expected func() NOT to panic with 'inner' (but it did)!")
 
 	this.pass(so(func() {}, ShouldNotPanicWith, "bye"))
 	this.pass(so(func() { panic("hi") }, ShouldNotPanicWith, "bye"))
+	this.pass(so(func() { panic(errInner) }, ShouldNotPanicWith, errOuter))
+
 }
+
+var (
+	errInner = errors.New("inner")
+	errOuter = fmt.Errorf("outer %w", errInner)
+)
