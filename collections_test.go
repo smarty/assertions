@@ -146,30 +146,30 @@ func (this *AssertionsFixture) TestShouldHaveLength() {
 	this.fail(so([]string{}, ShouldHaveLength, -10), "You must provide a valid positive integer (was -10)!")
 
 	this.fail(so([]int{}, ShouldHaveLength, 1), // empty slice
-		"Expected collection to have length equal to [1], but it's length was [0] instead! contents: []")
+		"Expected collection to have length equal to [1], but its length was [0] instead! contents: []")
 
 	this.fail(so([]interface{}{}, ShouldHaveLength, 1), // empty slice
-		"Expected collection to have length equal to [1], but it's length was [0] instead! contents: []")
+		"Expected collection to have length equal to [1], but its length was [0] instead! contents: []")
 
 	this.fail(so(map[string]int{}, ShouldHaveLength, 1), // empty map
-		"Expected collection to have length equal to [1], but it's length was [0] instead! contents: map[]")
+		"Expected collection to have length equal to [1], but its length was [0] instead! contents: map[]")
 
 	this.fail(so("", ShouldHaveLength, 1), // empty string
-		"Expected collection to have length equal to [1], but it's length was [0] instead! contents: ")
+		"Expected collection to have length equal to [1], but its length was [0] instead! contents: ")
 
 	this.fail(so(&[]int{}, ShouldHaveLength, 1), // pointer to empty slice
-		"Expected collection to have length equal to [1], but it's length was [0] instead! contents: &[]")
+		"Expected collection to have length equal to [1], but its length was [0] instead! contents: &[]")
 
 	this.fail(so(&[0]int{}, ShouldHaveLength, 1), // pointer to empty array
-		"Expected collection to have length equal to [1], but it's length was [0] instead! contents: &[]")
+		"Expected collection to have length equal to [1], but its length was [0] instead! contents: &[]")
 
 	c := make(chan int, 0) // non-empty channel
 	this.fail(so(c, ShouldHaveLength, 1), fmt.Sprintf(
-		"Expected collection to have length equal to [1], but it's length was [0] instead! contents: %+v", c))
+		"Expected collection to have length equal to [1], but its length was [0] instead! contents: %+v", c))
 
 	c = make(chan int) // empty channel
 	this.fail(so(c, ShouldHaveLength, 1), fmt.Sprintf(
-		"Expected collection to have length equal to [1], but it's length was [0] instead! contents: %+v", c))
+		"Expected collection to have length equal to [1], but its length was [0] instead! contents: %+v", c))
 
 	this.pass(so([]int{1}, ShouldHaveLength, 1))                // non-empty slice
 	this.pass(so([]interface{}{1}, ShouldHaveLength, 1))        // non-empty slice
