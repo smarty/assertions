@@ -1,7 +1,7 @@
 dist: bionic
 
 language: go
-ach: 
+arch: 
   - amd64
   - ppc64le
 go:
