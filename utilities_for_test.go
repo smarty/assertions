@@ -22,11 +22,11 @@ func (this *AssertionsFixture) Setup() {
 	serializer = this
 }
 
-func (self *AssertionsFixture) serialize(expected, actual interface{}, message string) string {
+func (self *AssertionsFixture) serialize(expected, actual any, message string) string {
 	return fmt.Sprintf("%v|%v|%s", expected, actual, message)
 }
 
-func (self *AssertionsFixture) serializeDetailed(expected, actual interface{}, message string) string {
+func (self *AssertionsFixture) serializeDetailed(expected, actual any, message string) string {
 	return fmt.Sprintf("%v|%v|%s", expected, actual, message)
 }
 

@@ -19,7 +19,7 @@ formatter, `fmt.Sprintf("%#v", value)`, adding:
   - Deterministic key sorting for `string`- and `int`-keyed maps.
   - Testing!
 
-Call `render.Render` and pass it an `interface{}`.
+Call `render.Render` and pass it an `any`.
 
 For example:
 
@@ -28,7 +28,7 @@ type customType int
 type testStruct struct {
         S string
         V *map[string]int
-        I interface{}
+        I any
 }
 
 a := testStruct{

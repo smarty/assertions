@@ -9,7 +9,7 @@ import (
 
 // ShouldContain receives exactly two parameters. The first is a slice and the
 // second is a proposed member. Membership is determined using ShouldEqual.
-func ShouldContain(actual interface{}, expected ...interface{}) string {
+func ShouldContain(actual any, expected ...any) string {
 	if fail := need(1, expected); fail != success {
 		return fail
 	}
@@ -27,7 +27,7 @@ func ShouldContain(actual interface{}, expected ...interface{}) string {
 
 // ShouldNotContain receives exactly two parameters. The first is a slice and the
 // second is a proposed member. Membership is determined using ShouldEqual.
-func ShouldNotContain(actual interface{}, expected ...interface{}) string {
+func ShouldNotContain(actual any, expected ...any) string {
 	if fail := need(1, expected); fail != success {
 		return fail
 	}
@@ -44,7 +44,7 @@ func ShouldNotContain(actual interface{}, expected ...interface{}) string {
 
 // ShouldContainKey receives exactly two parameters. The first is a map and the
 // second is a proposed key. Keys are compared with a simple '=='.
-func ShouldContainKey(actual interface{}, expected ...interface{}) string {
+func ShouldContainKey(actual any, expected ...any) string {
 	if fail := need(1, expected); fail != success {
 		return fail
 	}
@@ -63,7 +63,7 @@ func ShouldContainKey(actual interface{}, expected ...interface{}) string {
 
 // ShouldNotContainKey receives exactly two parameters. The first is a map and the
 // second is a proposed absent key. Keys are compared with a simple '=='.
-func ShouldNotContainKey(actual interface{}, expected ...interface{}) string {
+func ShouldNotContainKey(actual any, expected ...any) string {
 	if fail := need(1, expected); fail != success {
 		return fail
 	}
@@ -80,14 +80,14 @@ func ShouldNotContainKey(actual interface{}, expected ...interface{}) string {
 	return ""
 }
 
-func mapKeys(m interface{}) ([]reflect.Value, bool) {
+func mapKeys(m any) ([]reflect.Value, bool) {
 	value := reflect.ValueOf(m)
 	if value.Kind() != reflect.Map {
 		return nil, false
 	}
 	return value.MapKeys(), true
 }
-func keyFound(keys []reflect.Value, expectedKey interface{}) bool {
+func keyFound(keys []reflect.Value, expectedKey any) bool {
 	found := false
 	for _, key := range keys {
 		if key.Interface() == expectedKey {
@@ -101,7 +101,7 @@ func keyFound(keys []reflect.Value, expectedKey interface{}) bool {
 // that is passed in either as the second parameter, or of the collection that consists
 // of all the remaining parameters. This assertion ensures that the proposed member is in
 // the collection (using ShouldEqual).
-func ShouldBeIn(actual interface{}, expected ...interface{}) string {
+func ShouldBeIn(actual any, expected ...any) string {
 	if fail := atLeast(1, expected); fail != success {
 		return fail
 	}
@@ -111,7 +111,7 @@ func ShouldBeIn(actual interface{}, expected ...interface{}) string {
 	}
 	return shouldBeIn(actual, expected)
 }
-func shouldBeIn(actual interface{}, expected interface{}) string {
+func shouldBeIn(actual any, expected any) string {
 	if matchError := oglematchers.Contains(actual).Matches(expected); matchError != nil {
 		return fmt.Sprintf(shouldHaveBeenIn, actual, reflect.TypeOf(expected))
 	}
@@ -122,7 +122,7 @@ func shouldBeIn(actual interface{}, expected interface{}) string {
 // that is passed in either as the second parameter, or of the collection that consists
 // of all the remaining parameters. This assertion ensures that the proposed member is NOT in
 // the collection (using ShouldEqual).
-func ShouldNotBeIn(actual interface{}, expected ...interface{}) string {
+func ShouldNotBeIn(actual any, expected ...any) string {
 	if fail := atLeast(1, expected); fail != success {
 		return fail
 	}
@@ -132,7 +132,7 @@ func ShouldNotBeIn(actual interface{}, expected ...interface{}) string {
 	}
 	return shouldNotBeIn(actual, expected)
 }
-func shouldNotBeIn(actual interface{}, expected interface{}) string {
+func shouldNotBeIn(actual any, expected any) string {
 	if matchError := oglematchers.Contains(actual).Matches(expected); matchError == nil {
 		return fmt.Sprintf(shouldNotHaveBeenIn, actual, reflect.TypeOf(expected))
 	}
@@ -142,7 +142,7 @@ func shouldNotBeIn(actual interface{}, expected interface{}) string {
 // ShouldBeEmpty receives a single parameter (actual) and determines whether
 // calling len(actual) would return `0`. It obeys the rules specified by the len
 // function for determining length: http://golang.org/pkg/builtin/#len
-func ShouldBeEmpty(actual interface{}, expected ...interface{}) string {
+func ShouldBeEmpty(actual any, expected ...any) string {
 	if fail := need(0, expected); fail != success {
 		return fail
 	}
@@ -183,7 +183,7 @@ func ShouldBeEmpty(actual interface{}, expected ...interface{}) string {
 // ShouldNotBeEmpty receives a single parameter (actual) and determines whether
 // calling len(actual) would return a value greater than zero. It obeys the rules
 // specified by the `len` function for determining length: http://golang.org/pkg/builtin/#len
-func ShouldNotBeEmpty(actual interface{}, expected ...interface{}) string {
+func ShouldNotBeEmpty(actual any, expected ...any) string {
 	if fail := need(0, expected); fail != success {
 		return fail
 	}
@@ -198,7 +198,7 @@ func ShouldNotBeEmpty(actual interface{}, expected ...interface{}) string {
 // the length of, the second being the expected length. It obeys the rules
 // specified by the len function for determining length:
 // http://golang.org/pkg/builtin/#len
-func ShouldHaveLength(actual interface{}, expected ...interface{}) string {
+func ShouldHaveLength(actual any, expected ...any) string {
 	if fail := need(1, expected); fail != success {
 		return fail
 	}

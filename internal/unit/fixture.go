@@ -13,7 +13,7 @@ import (
 	"testing"
 )
 
-func Run(fixture interface{}, t *testing.T) {
+func Run(fixture any, t *testing.T) {
 	fixtureType := reflect.TypeOf(fixture)
 
 	for x := 0; x < fixtureType.NumMethod(); x++ {
@@ -52,7 +52,7 @@ func newFixture(t *testing.T, verbose bool) *Fixture {
 	return &Fixture{t: t, verbose: verbose, log: &bytes.Buffer{}}
 }
 
-func (this *Fixture) So(actual interface{}, assert assertion, expected ...interface{}) bool {
+func (this *Fixture) So(actual any, assert assertion, expected ...any) bool {
 	failure := assert(actual, expected...)
 	failed := len(failure) > 0
 	if failed {
@@ -77,28 +77,28 @@ func (this *Fixture) Assert(condition bool, messages ...string) bool {
 	}
 	return condition
 }
-func (this *Fixture) AssertEqual(expected, actual interface{}) bool {
+func (this *Fixture) AssertEqual(expected, actual any) bool {
 	return this.Assert(expected == actual, fmt.Sprintf(comparisonFormat, fmt.Sprint(expected), fmt.Sprint(actual)))
 }
-func (this *Fixture) AssertSprintEqual(expected, actual interface{}) bool {
+func (this *Fixture) AssertSprintEqual(expected, actual any) bool {
 	return this.AssertEqual(fmt.Sprint(expected), fmt.Sprint(actual))
 }
-func (this *Fixture) AssertSprintfEqual(expected, actual interface{}, format string) bool {
+func (this *Fixture) AssertSprintfEqual(expected, actual any, format string) bool {
 	return this.AssertEqual(fmt.Sprintf(format, expected), fmt.Sprintf(format, actual))
 }
-func (this *Fixture) AssertDeepEqual(expected, actual interface{}) bool {
+func (this *Fixture) AssertDeepEqual(expected, actual any) bool {
 	return this.Assert(reflect.DeepEqual(expected, actual),
 		fmt.Sprintf(comparisonFormat, fmt.Sprintf("%#v", expected), fmt.Sprintf("%#v", actual)))
 }
 
 const comparisonFormat = "Expected: [%s]\nActual:   [%s]"
 
-func (this *Fixture) Error(args ...interface{})            { this.fail(fmt.Sprint(args...)) }
-func (this *Fixture) Errorf(f string, args ...interface{}) { this.fail(fmt.Sprintf(f, args...)) }
+func (this *Fixture) Error(args ...any)            { this.fail(fmt.Sprint(args...)) }
+func (this *Fixture) Errorf(f string, args ...any) { this.fail(fmt.Sprintf(f, args...)) }
 
-func (this *Fixture) Print(a ...interface{})                 { fmt.Fprint(this.log, a...) }
-func (this *Fixture) Printf(format string, a ...interface{}) { fmt.Fprintf(this.log, format, a...) }
-func (this *Fixture) Println(a ...interface{})               { fmt.Fprintln(this.log, a...) }
+func (this *Fixture) Print(a ...any)                 { fmt.Fprint(this.log, a...) }
+func (this *Fixture) Printf(format string, a ...any) { fmt.Fprintf(this.log, format, a...) }
+func (this *Fixture) Println(a ...any)               { fmt.Fprintln(this.log, a...) }
 
 func (this *Fixture) Write(p []byte) (int, error) { return this.log.Write(p) }
 func (this *Fixture) Failed() bool                { return this.t.Failed() }
@@ -113,7 +113,7 @@ func (this *Fixture) Finalize() {
 		this.t.Log("\n" + strings.TrimSpace(this.log.String()) + "\n")
 	}
 }
-func (this *Fixture) recoverPanic(r interface{}) {
+func (this *Fixture) recoverPanic(r any) {
 	this.Println("PANIC:", r)
 	buffer := make([]byte, 1024*16)
 	runtime.Stack(buffer, false)
@@ -122,4 +122,4 @@ func (this *Fixture) recoverPanic(r interface{}) {
 }
 
 // assertion is a copy of github.com/smartystreets/assertions.assertion.
-type assertion func(actual interface{}, expected ...interface{}) string
+type assertion func(actual any, expected ...any) string

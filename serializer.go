@@ -9,13 +9,13 @@ import (
 )
 
 type Serializer interface {
-	serialize(expected, actual interface{}, message string) string
-	serializeDetailed(expected, actual interface{}, message string) string
+	serialize(expected, actual any, message string) string
+	serializeDetailed(expected, actual any, message string) string
 }
 
 type failureSerializer struct{}
 
-func (self *failureSerializer) serializeDetailed(expected, actual interface{}, message string) string {
+func (self *failureSerializer) serializeDetailed(expected, actual any, message string) string {
 	if index := strings.Index(message, " Diff:"); index > 0 {
 		message = message[:index]
 	}
@@ -28,7 +28,7 @@ func (self *failureSerializer) serializeDetailed(expected, actual interface{}, m
 	return string(serialized)
 }
 
-func (self *failureSerializer) serialize(expected, actual interface{}, message string) string {
+func (self *failureSerializer) serialize(expected, actual any, message string) string {
 	if index := strings.Index(message, " Diff:"); index > 0 {
 		message = message[:index]
 	}
@@ -62,9 +62,9 @@ type FailureView struct {
 // structure provided by the failureSerializer.
 type noopSerializer struct{}
 
-func (self *noopSerializer) serialize(expected, actual interface{}, message string) string {
+func (self *noopSerializer) serialize(expected, actual any, message string) string {
 	return message
 }
-func (self *noopSerializer) serializeDetailed(expected, actual interface{}, message string) string {
+func (self *noopSerializer) serializeDetailed(expected, actual any, message string) string {
 	return message
 }

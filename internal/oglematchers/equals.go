@@ -55,7 +55,7 @@ import (
 // exceptions above. Two arrays compared with this matcher must have identical
 // types, and their element type must itself be comparable according to Go's ==
 // operator.
-func Equals(x interface{}) Matcher {
+func Equals(x any) Matcher {
 	v := reflect.ValueOf(x)
 
 	// This matcher doesn't support structs.
@@ -473,7 +473,7 @@ func checkForNil(c reflect.Value) (err error) {
 // Public implementation
 ////////////////////////////////////////////////////////////////////////
 
-func (m *equalsMatcher) Matches(candidate interface{}) error {
+func (m *equalsMatcher) Matches(candidate any) error {
 	e := m.expectedValue
 	c := reflect.ValueOf(candidate)
 	ek := e.Kind()

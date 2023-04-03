@@ -91,7 +91,7 @@ func (this *AssertionsFixture) TestShouldBeEmpty() {
 
 	this.pass(so([]int{}, ShouldBeEmpty))           // empty slice
 	this.pass(so([][]int{}, ShouldBeEmpty))         // empty slice
-	this.pass(so([]interface{}{}, ShouldBeEmpty))   // empty slice
+	this.pass(so([]any{}, ShouldBeEmpty))           // empty slice
 	this.pass(so(map[string]int{}, ShouldBeEmpty))  // empty map
 	this.pass(so("", ShouldBeEmpty))                // empty string
 	this.pass(so(&[]int{}, ShouldBeEmpty))          // pointer to empty slice
@@ -101,7 +101,7 @@ func (this *AssertionsFixture) TestShouldBeEmpty() {
 
 	this.fail(so([]int{1}, ShouldBeEmpty), "Expected [1] to be empty (but it wasn't)!")                      // non-empty slice
 	this.fail(so([][]int{{1}}, ShouldBeEmpty), "Expected [[1]] to be empty (but it wasn't)!")                // non-empty slice
-	this.fail(so([]interface{}{1}, ShouldBeEmpty), "Expected [1] to be empty (but it wasn't)!")              // non-empty slice
+	this.fail(so([]any{1}, ShouldBeEmpty), "Expected [1] to be empty (but it wasn't)!")                      // non-empty slice
 	this.fail(so(map[string]int{"hi": 0}, ShouldBeEmpty), "Expected map[hi:0] to be empty (but it wasn't)!") // non-empty map
 	this.fail(so("hi", ShouldBeEmpty), "Expected hi to be empty (but it wasn't)!")                           // non-empty string
 	this.fail(so(&[]int{1}, ShouldBeEmpty), "Expected &[1] to be empty (but it wasn't)!")                    // pointer to non-empty slice
@@ -116,7 +116,7 @@ func (this *AssertionsFixture) TestShouldNotBeEmpty() {
 	this.fail(so(1, ShouldNotBeEmpty, 2, 3), "This assertion requires exactly 0 comparison values (you provided 2).")
 
 	this.fail(so([]int{}, ShouldNotBeEmpty), "Expected [] to NOT be empty (but it was)!")             // empty slice
-	this.fail(so([]interface{}{}, ShouldNotBeEmpty), "Expected [] to NOT be empty (but it was)!")     // empty slice
+	this.fail(so([]any{}, ShouldNotBeEmpty), "Expected [] to NOT be empty (but it was)!")             // empty slice
 	this.fail(so(map[string]int{}, ShouldNotBeEmpty), "Expected map[] to NOT be empty (but it was)!") // empty map
 	this.fail(so("", ShouldNotBeEmpty), "Expected  to NOT be empty (but it was)!")                    // empty string
 	this.fail(so(&[]int{}, ShouldNotBeEmpty), "Expected &[] to NOT be empty (but it was)!")           // pointer to empty slice
@@ -126,7 +126,7 @@ func (this *AssertionsFixture) TestShouldNotBeEmpty() {
 	this.fail(so(c, ShouldNotBeEmpty), fmt.Sprintf("Expected %+v to NOT be empty (but it was)!", c))  // empty channel
 
 	this.pass(so([]int{1}, ShouldNotBeEmpty))                // non-empty slice
-	this.pass(so([]interface{}{1}, ShouldNotBeEmpty))        // non-empty slice
+	this.pass(so([]any{1}, ShouldNotBeEmpty))                // non-empty slice
 	this.pass(so(map[string]int{"hi": 0}, ShouldNotBeEmpty)) // non-empty map
 	this.pass(so("hi", ShouldNotBeEmpty))                    // non-empty string
 	this.pass(so(&[]int{1}, ShouldNotBeEmpty))               // pointer to non-empty slice
@@ -148,7 +148,7 @@ func (this *AssertionsFixture) TestShouldHaveLength() {
 	this.fail(so([]int{}, ShouldHaveLength, 1), // empty slice
 		"Expected collection to have length equal to [1], but its length was [0] instead! contents: []")
 
-	this.fail(so([]interface{}{}, ShouldHaveLength, 1), // empty slice
+	this.fail(so([]any{}, ShouldHaveLength, 1), // empty slice
 		"Expected collection to have length equal to [1], but its length was [0] instead! contents: []")
 
 	this.fail(so(map[string]int{}, ShouldHaveLength, 1), // empty map
@@ -172,7 +172,7 @@ func (this *AssertionsFixture) TestShouldHaveLength() {
 		"Expected collection to have length equal to [1], but its length was [0] instead! contents: %+v", c))
 
 	this.pass(so([]int{1}, ShouldHaveLength, 1))                // non-empty slice
-	this.pass(so([]interface{}{1}, ShouldHaveLength, 1))        // non-empty slice
+	this.pass(so([]any{1}, ShouldHaveLength, 1))                // non-empty slice
 	this.pass(so(map[string]int{"hi": 0}, ShouldHaveLength, 1)) // non-empty map
 	this.pass(so("hi", ShouldHaveLength, 2))                    // non-empty string
 	this.pass(so(&[]int{1}, ShouldHaveLength, 1))               // pointer to non-empty slice

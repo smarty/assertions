@@ -22,7 +22,7 @@ func init() {
 	}
 }
 
-func assertRendersLike(t *testing.T, name string, v interface{}, exp string) {
+func assertRendersLike(t *testing.T, name string, v any, exp string) {
 	act := Render(v)
 	if act != exp {
 		_, _, line, _ := runtime.Caller(1)
@@ -38,7 +38,7 @@ func TestRenderList(t *testing.T) {
 	// do not, so recursion tests are off by one.
 	type testStruct struct {
 		Name string
-		I    interface{}
+		I    any
 
 		m string
 	}
@@ -59,7 +59,7 @@ func TestRenderList(t *testing.T) {
 	stringer := fmt.Stringer(nil)
 
 	for i, tc := range []struct {
-		a interface{}
+		a any
 		s string
 	}{
 		{nil, `nil`},
@@ -71,15 +71,15 @@ func TestRenderList(t *testing.T) {
 		{(**testStruct)(nil), `(**render.testStruct)(nil)`},
 		{[]***testStruct(nil), `[]***render.testStruct(nil)`},
 		{testStruct{Name: "foo", I: &testStruct{Name: "baz"}},
-			`render.testStruct{Name:"foo", I:(*render.testStruct){Name:"baz", I:interface{}(nil), m:""}, m:""}`},
+			`render.testStruct{Name:"foo", I:(*render.testStruct){Name:"baz", I:any(nil), m:""}, m:""}`},
 		{[]byte(nil), `[]uint8(nil)`},
 		{[]byte{}, `[]uint8{}`},
 		{map[string]string(nil), `map[string]string(nil)`},
 		{[]*testStruct{
 			{Name: "foo"},
 			{Name: "bar"},
-		}, `[]*render.testStruct{(*render.testStruct){Name:"foo", I:interface{}(nil), m:""}, ` +
-			`(*render.testStruct){Name:"bar", I:interface{}(nil), m:""}}`},
+		}, `[]*render.testStruct{(*render.testStruct){Name:"foo", I:any(nil), m:""}, ` +
+			`(*render.testStruct){Name:"bar", I:any(nil), m:""}}`},
 		{myStringSlice{"foo", "bar"}, `render.myStringSlice{"foo", "bar"}`},
 		{myStringMap{"foo": "bar"}, `render.myStringMap{"foo":"bar"}`},
 		{myIntType(12), `render.myIntType(12)`},
@@ -104,7 +104,7 @@ func TestRenderList(t *testing.T) {
 		{complex(3, 0.14), `(3+0.14i)`},
 		{&s0, `(*string)("string0")`},
 		{&s0P, `(**string)("string0")`},
-		{[]interface{}{nil, 1, 2, nil}, `[]interface{}{interface{}(nil), 1, 2, interface{}(nil)}`},
+		{[]any{nil, 1, 2, nil}, `[]any{any(nil), 1, 2, any(nil)}`},
 	} {
 		assertRendersLike(t, fmt.Sprintf("Input #%d", i), tc.a, tc.s)
 	}
@@ -113,7 +113,7 @@ func TestRenderList(t *testing.T) {
 func TestRenderRecursiveStruct(t *testing.T) {
 	type testStruct struct {
 		Name string
-		I    interface{}
+		I    any
 	}
 
 	s := &testStruct{
@@ -126,27 +126,27 @@ func TestRenderRecursiveStruct(t *testing.T) {
 }
 
 func TestRenderRecursiveArray(t *testing.T) {
-	a := [2]interface{}{}
+	a := [2]any{}
 	a[0] = &a
 	a[1] = &a
 
 	assertRendersLike(t, "Recursive array", &a,
-		`(*[2]interface{}){<REC(*[2]interface{})>, <REC(*[2]interface{})>}`)
+		`(*[2]any){<REC(*[2]any)>, <REC(*[2]any)>}`)
 }
 
 func TestRenderRecursiveMap(t *testing.T) {
-	m := map[string]interface{}{}
+	m := map[string]any{}
 	foo := "foo"
 	m["foo"] = m
 	m["bar"] = [](*string){&foo, &foo}
-	v := []map[string]interface{}{m, m}
+	v := []map[string]any{m, m}
 
 	assertRendersLike(t, "Recursive map", v,
-		`[]map[string]interface{}{{`+
+		`[]map[string]any{{`+
 			`"bar":[]*string{(*string)("foo"), (*string)("foo")}, `+
-			`"foo":<REC(map[string]interface{})>}, {`+
+			`"foo":<REC(map[string]any)>}, {`+
 			`"bar":[]*string{(*string)("foo"), (*string)("foo")}, `+
-			`"foo":<REC(map[string]interface{})>}}`)
+			`"foo":<REC(map[string]any)>}}`)
 }
 
 func TestRenderImplicitType(t *testing.T) {
@@ -154,7 +154,7 @@ func TestRenderImplicitType(t *testing.T) {
 	type namedInt int
 
 	tcs := []struct {
-		in     interface{}
+		in     any
 		expect string
 	}{
 		{
@@ -189,7 +189,7 @@ func ExampleInReadme() {
 	type testStruct struct {
 		S string
 		V *map[string]int
-		I interface{}
+		I any
 	}
 
 	a := testStruct{
@@ -230,7 +230,7 @@ func TestMapSortRendering(t *testing.T) {
 	}
 
 	tcs := []struct {
-		in     interface{}
+		in     any
 		expect string
 	}{
 		{
@@ -262,8 +262,8 @@ func TestMapSortRendering(t *testing.T) {
 			"map[bool]struct {}{false:{}, true:{}}",
 		},
 		{
-			map[interface{}]struct{}{1: {}, 2: {}, 3: {}, "foo": {}},
-			`map[interface{}]struct {}{1:{}, 2:{}, 3:{}, "foo":{}}`,
+			map[any]struct{}{1: {}, 2: {}, 3: {}, "foo": {}},
+			`map[any]struct {}{1:{}, 2:{}, 3:{}, "foo":{}}`,
 		},
 		{
 			map[complex64]struct{}{1 + 2i: {}, 2 + 1i: {}, 3 + 1i: {}, 1 + 3i: {}},

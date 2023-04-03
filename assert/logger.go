@@ -34,7 +34,7 @@ func capture() *logger {
 }
 
 // Fatal -> log.Fatal (except in testing it uses log.Print)
-func (this *logger) Fatal(v ...interface{}) {
+func (this *logger) Fatal(v ...any) {
 	if this == nil {
 		this.Output(3, fmt.Sprint(v...))
 		os.Exit(1)
@@ -45,7 +45,7 @@ func (this *logger) Fatal(v ...interface{}) {
 }
 
 // Panic -> log.Panic
-func (this *logger) Panic(v ...interface{}) {
+func (this *logger) Panic(v ...any) {
 	if this == nil {
 		s := fmt.Sprint(v...)
 		this.Output(3, s)
@@ -57,7 +57,7 @@ func (this *logger) Panic(v ...interface{}) {
 }
 
 // Print -> log.Print
-func (this *logger) Print(v ...interface{}) {
+func (this *logger) Print(v ...any) {
 	if this == nil {
 		this.Output(3, fmt.Sprint(v...))
 	} else {

@@ -36,7 +36,7 @@ type Result struct {
 //	if err := assert.So(1, should.Equal, 1).Error(); err != nil {
 //	    // Allows custom handling of the error, which will include the failure message and file:line header.
 //	}
-func So(actual interface{}, assert assertion, expected ...interface{}) *Result {
+func So(actual any, assert assertion, expected ...any) *Result {
 	result := new(Result)
 	result.stdout = os.Stdout
 	result.invocation = fmt.Sprintf("So(actual: %v, %v, expected: %v)", actual, assertionName(assert), expected)
@@ -46,7 +46,7 @@ func So(actual interface{}, assert assertion, expected ...interface{}) *Result {
 	}
 	return result
 }
-func assertionName(i interface{}) string {
+func assertionName(i any) string {
 	functionAddress := runtime.FuncForPC(reflect.ValueOf(i).Pointer())
 	fullNameStartingWithPackage := functionAddress.Name()
 	parts := strings.Split(fullNameStartingWithPackage, "/")
@@ -114,4 +114,4 @@ func (this *Result) Fatal() *Result {
 }
 
 // assertion is a copy of github.com/smartystreets/assertions.assertion.
-type assertion func(actual interface{}, expected ...interface{}) string
+type assertion func(actual any, expected ...any) string

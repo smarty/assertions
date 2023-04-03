@@ -69,6 +69,6 @@ type FakeT struct {
 	buffer *bytes.Buffer
 }
 
-func (this *FakeT) Error(args ...interface{}) {
+func (this *FakeT) Error(args ...any) {
 	fmt.Fprint(this.buffer, args...)
 }
