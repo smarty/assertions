@@ -326,7 +326,7 @@ func ShouldBeZeroValue(actual interface{}, expected ...interface{}) string {
 	return success
 }
 
-// ShouldBeZeroValue receives a single parameter and ensures that it is NOT
+// ShouldNotBeZeroValue receives a single parameter and ensures that it is NOT
 // the Go equivalent of the default value, or "zero" value.
 func ShouldNotBeZeroValue(actual interface{}, expected ...interface{}) string {
 	if fail := need(0, expected); fail != success {

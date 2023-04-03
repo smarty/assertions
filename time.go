@@ -214,5 +214,5 @@ func ShouldNotBeChronological(actual interface{}, expected ...interface{}) strin
 	if result != "" {
 		return ""
 	}
-	return shouldNotHaveBeenchronological
+	return shouldNotHaveBeenChronological
 }

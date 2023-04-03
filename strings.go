@@ -86,7 +86,7 @@ func shouldEndWith(value, suffix string) string {
 	return success
 }
 
-// ShouldEndWith receives exactly 2 string parameters and ensures that the first does not end with the second.
+// ShouldNotEndWith receives exactly 2 string parameters and ensures that the first does not end with the second.
 func ShouldNotEndWith(actual interface{}, expected ...interface{}) string {
 	if fail := need(1, expected); fail != success {
 		return fail

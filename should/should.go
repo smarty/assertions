@@ -1,4 +1,4 @@
-// package should is simply a rewording of the assertion
+// Package should is simply a rewording of the assertion
 // functions in the assertions package.
 package should
 

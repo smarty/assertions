@@ -28,14 +28,14 @@ type Result struct {
 // In this case, the return value is a *Result which possesses several of its
 // own convenience methods:
 //
-//    fmt.Println(assert.So(1, should.Equal, 1)) // Calls String() and prints the representation of the assertion.
-//    assert.So(1, should.Equal, 1).Println()    // Calls fmt.Print with the failure message and file:line header.
-//    assert.So(1, should.Equal, 1).Log()        // Calls log.Print with the failure message and file:line header.
-//    assert.So(1, should.Equal, 1).Panic()      // Calls log.Panic with the failure message and file:line header.
-//    assert.So(1, should.Equal, 1).Fatal()      // Calls log.Fatal with the failure message and file:line header.
-//    if err := assert.So(1, should.Equal, 1).Error(); err != nil {
-//        // Allows custom handling of the error, which will include the failure message and file:line header.
-//    }
+//	fmt.Println(assert.So(1, should.Equal, 1)) // Calls String() and prints the representation of the assertion.
+//	assert.So(1, should.Equal, 1).Println()    // Calls fmt.Print with the failure message and file:line header.
+//	assert.So(1, should.Equal, 1).Log()        // Calls log.Print with the failure message and file:line header.
+//	assert.So(1, should.Equal, 1).Panic()      // Calls log.Panic with the failure message and file:line header.
+//	assert.So(1, should.Equal, 1).Fatal()      // Calls log.Fatal with the failure message and file:line header.
+//	if err := assert.So(1, should.Equal, 1).Error(); err != nil {
+//	    // Allows custom handling of the error, which will include the failure message and file:line header.
+//	}
 func So(actual interface{}, assert assertion, expected ...interface{}) *Result {
 	result := new(Result)
 	result.stdout = os.Stdout

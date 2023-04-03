@@ -18,7 +18,7 @@ import (
 	"runtime"
 )
 
-// By default we use a no-op serializer. The actual Serializer provides a JSON
+// By default, we use a no-op serializer. The actual Serializer provides a JSON
 // representation of failure results on selected assertions so the goconvey
 // web UI can display a convenient diff.
 var serializer Serializer = new(noopSerializer)
@@ -80,9 +80,9 @@ func (this *Assertion) So(actual interface{}, assert SoFunc, expected ...interfa
 //
 // Example:
 //
-//   if ok, message := So(x, ShouldBeGreaterThan, y); !ok {
-//        log.Println(message)
-//   }
+//	if ok, message := So(x, ShouldBeGreaterThan, y); !ok {
+//	     log.Println(message)
+//	}
 //
 // For an alternative implementation of So (that provides more flexible return options)
 // see the `So` function in the package at github.com/smartystreets/assertions/assert.

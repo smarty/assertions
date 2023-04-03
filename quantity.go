@@ -38,7 +38,7 @@ func ShouldBeLessThan(actual interface{}, expected ...interface{}) string {
 	return success
 }
 
-// ShouldBeLessThan receives exactly two parameters and ensures that the first is less than or equal to the second.
+// ShouldBeLessThanOrEqualTo receives exactly two parameters and ensures that the first is less than or equal to the second.
 func ShouldBeLessThanOrEqualTo(actual interface{}, expected ...interface{}) string {
 	if fail := need(1, expected); fail != success {
 		return fail

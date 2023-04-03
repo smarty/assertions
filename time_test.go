@@ -160,7 +160,6 @@ var january4, _ = time.Parse(layout, "2013-01-04 00:00")
 var january5, _ = time.Parse(layout, "2013-01-05 00:00")
 
 var oneDay, _ = time.ParseDuration("24h0m0s")
-var twoDays, _ = time.ParseDuration("48h0m0s")
 
 func pretty(t time.Time) string {
 	return fmt.Sprintf("%v", t)
