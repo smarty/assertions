@@ -156,9 +156,7 @@ func (this *AssertionsFixture) TestShouldResemble() {
 	this.fail(so(StringAlias("hi"), ShouldResemble, "hi"), `hi|hi|Expected: '"hi"' Actual: 'assertions.StringAlias("hi")' (Should resemble)!`)
 	this.fail(so(IntAlias(42), ShouldResemble, 42), `42|42|Expected: '42' Actual: 'assertions.IntAlias(42)' (Should resemble)!`)
 
-	type anyVal struct {
-		val interface{}
-	}
+	type anyVal struct{ val interface{} }
 	this.fail(so(anyVal{123}, ShouldResemble, anyVal{int64(123)}), "{123}|{123}|Expected: 'assertions.anyVal{val:123}' Actual: 'assertions.anyVal{val:123}' (Should resemble, but there is a type difference within the two)!")
 }
 

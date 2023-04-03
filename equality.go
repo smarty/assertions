@@ -188,11 +188,6 @@ func ShouldResemble(actual interface{}, expected ...interface{}) string {
 	if matchError := oglematchers.DeepEquals(expected[0]).Matches(actual); matchError != nil {
 		renderedExpected, renderedActual := render.Render(expected[0]), render.Render(actual)
 		if renderedActual == renderedExpected {
-			// Render doesn't show the types of fields, so something like int(5) will appear
-			// the same as int64(5), but they will cause DeepEquals to return false. This
-			// message at least makes it clear why there appears to be no diff. A better solution
-			// would be to have the diff look for where the two items actually differ, e.g. through
-			// something like https://github.com/go-test/deep
 			message := fmt.Sprintf(shouldHaveResembledButTypeDiff, renderedExpected, renderedActual)
 			return serializer.serializeDetailed(expected[0], actual, message)
 		}
