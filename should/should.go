@@ -2,7 +2,7 @@
 // functions in the assertions package.
 package should
 
-import "github.com/smartystreets/assertions"
+import "github.com/smarty/assertions"
 
 var (
 	AlmostEqual            = assertions.ShouldAlmostEqual

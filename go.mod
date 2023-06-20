@@ -1,3 +1,3 @@
-module github.com/smartystreets/assertions
+module github.com/smarty/assertions
 
 go 1.18

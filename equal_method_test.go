@@ -3,7 +3,7 @@ package assertions
 import (
 	"testing"
 
-	"github.com/smartystreets/assertions/internal/unit"
+	"github.com/smarty/assertions/internal/unit"
 )
 
 func TestEqualityFixture(t *testing.T) {

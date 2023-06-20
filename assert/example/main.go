@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/smartystreets/assertions/assert"
-	"github.com/smartystreets/assertions/should"
+	"github.com/smarty/assertions/assert"
+	"github.com/smarty/assertions/should"
 )
 
 func main() {

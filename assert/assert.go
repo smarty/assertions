@@ -113,5 +113,5 @@ func (this *Result) Fatal() *Result {
 	return this
 }
 
-// assertion is a copy of github.com/smartystreets/assertions.assertion.
+// assertion is a copy of github.com/smarty/assertions.assertion.
 type assertion func(actual any, expected ...any) string

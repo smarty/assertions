@@ -1,6 +1,6 @@
 // package unit implements a light-weight x-Unit style testing framework.
-// It is basically a scaled-down version of github.com/smartystreets/gunit.
-// See https://smartystreets.com/blog/2018/07/lets-build-xunit-in-go for
+// It is basically a scaled-down version of github.com/smarty/gunit.
+// See https://smarty.com/blog/2018/07/lets-build-xunit-in-go for
 // an explanation of the basic moving parts.
 package unit
 
@@ -121,5 +121,5 @@ func (this *Fixture) recoverPanic(r any) {
 	this.t.Fail()
 }
 
-// assertion is a copy of github.com/smartystreets/assertions.assertion.
+// assertion is a copy of github.com/smarty/assertions.assertion.
 type assertion func(actual any, expected ...any) string
