@@ -2,69 +2,59 @@ package assertions
 
 import "reflect"
 
-type equalityMethodSpecification struct {
-	a any
-	b any
+type equalityMethodSpecification struct{}
 
-	aType reflect.Type
-	bType reflect.Type
-
-	equalMethod reflect.Value
-}
-
-func newEqualityMethodSpecification(a, b any) *equalityMethodSpecification {
-	return &equalityMethodSpecification{
-		a: a,
-		b: b,
-	}
-}
-
-func (this *equalityMethodSpecification) IsSatisfied() bool {
-	if !this.bothAreSameType() {
+func (this equalityMethodSpecification) assertable(a, b any) bool {
+	if !bothAreSameType(a, b) {
 		return false
 	}
-	if !this.typeHasEqualMethod() {
+	if !typeHasEqualMethod(a) {
 		return false
 	}
-	if !this.equalMethodReceivesSameTypeForComparison() {
+	if !equalMethodReceivesSameTypeForComparison(a) {
 		return false
 	}
-	if !this.equalMethodReturnsBool() {
+	if !equalMethodReturnsBool(a) {
 		return false
 	}
 	return true
 }
-
-func (this *equalityMethodSpecification) bothAreSameType() bool {
-	this.aType = reflect.TypeOf(this.a)
-	if this.aType == nil {
+func bothAreSameType(a, b any) bool {
+	aType := reflect.TypeOf(a)
+	if aType == nil {
 		return false
 	}
-	if this.aType.Kind() == reflect.Ptr {
-		this.aType = this.aType.Elem()
+	if aType.Kind() == reflect.Ptr {
+		aType = aType.Elem()
 	}
-	this.bType = reflect.TypeOf(this.b)
-	return this.aType == this.bType
+	bType := reflect.TypeOf(b)
+	return aType == bType
 }
-func (this *equalityMethodSpecification) typeHasEqualMethod() bool {
-	aInstance := reflect.ValueOf(this.a)
-	this.equalMethod = aInstance.MethodByName("Equal")
-	return this.equalMethod != reflect.Value{}
+func typeHasEqualMethod(a any) bool {
+	aInstance := reflect.ValueOf(a)
+	equalMethod := aInstance.MethodByName("Equal")
+	return equalMethod != reflect.Value{}
 }
-
-func (this *equalityMethodSpecification) equalMethodReceivesSameTypeForComparison() bool {
-	signature := this.equalMethod.Type()
-	return signature.NumIn() == 1 && signature.In(0) == this.aType
+func equalMethodReceivesSameTypeForComparison(a any) bool {
+	aType := reflect.TypeOf(a)
+	if aType.Kind() == reflect.Ptr {
+		aType = aType.Elem()
+	}
+	aInstance := reflect.ValueOf(a)
+	equalMethod := aInstance.MethodByName("Equal")
+	signature := equalMethod.Type()
+	return signature.NumIn() == 1 && signature.In(0) == aType
 }
-
-func (this *equalityMethodSpecification) equalMethodReturnsBool() bool {
-	signature := this.equalMethod.Type()
+func equalMethodReturnsBool(a any) bool {
+	aInstance := reflect.ValueOf(a)
+	equalMethod := aInstance.MethodByName("Equal")
+	signature := equalMethod.Type()
 	return signature.NumOut() == 1 && signature.Out(0) == reflect.TypeOf(true)
 }
 
-func (this *equalityMethodSpecification) AreEqual() bool {
-	a := reflect.ValueOf(this.a)
-	b := reflect.ValueOf(this.b)
+func (this equalityMethodSpecification) passes(A, B any) bool {
+	a := reflect.ValueOf(A)
+	b := reflect.ValueOf(B)
 	return areEqual(a, b) && areEqual(b, a)
 }
 func areEqual(receiver reflect.Value, argument reflect.Value) bool {

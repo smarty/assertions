@@ -26,7 +26,7 @@ func (this *FailedResultFixture) Setup() {
 func (this *FailedResultFixture) assertLogMessageContents() {
 	this.So(this.result.logger.Log.String(), should.ContainSubstring, "✘ So(actual: 1, should.Equal, expected: [2])")
 	this.So(this.result.logger.Log.String(), should.ContainSubstring, "Assertion failure at ")
-	this.So(this.result.logger.Log.String(), should.EndWith, "Expected: '2'\nActual:   '1'\n(Should be equal)\n")
+	this.So(this.result.logger.Log.String(), should.EndWith, "Expected: 2\nActual:   1\n(Should equal)!\n")
 }
 
 func (this *FailedResultFixture) TestQueryFunctions() {

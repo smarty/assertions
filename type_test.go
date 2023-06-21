@@ -83,7 +83,7 @@ func (this *AssertionsFixture) TestShouldBeError() {
 	error1 := errors.New("Message")
 
 	this.fail(so(error1, ShouldBeError, 42), "The final argument to this assertion must be a string or an error value (you provided: 'int').")
-	this.fail(so(error1, ShouldBeError, "Wrong error message"), "Wrong error message|Message|Expected: 'Wrong error message' Actual: 'Message' (Should be equal)")
+	this.fail(so(error1, ShouldBeError, "Wrong error message"), `Wrong error message|Message|Expected: "Wrong error message" Actual: "Message" (Should equal)!`)
 
 	this.pass(so(error1, ShouldBeError))
 	this.pass(so(error1, ShouldBeError, error1))

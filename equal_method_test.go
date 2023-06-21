@@ -15,116 +15,116 @@ type EqualityFixture struct {
 }
 
 func (this *EqualityFixture) TestNilNil() {
-	spec := newEqualityMethodSpecification(nil, nil)
-	this.So(spec.IsSatisfied(), ShouldBeFalse)
+	spec := equalityMethodSpecification{}
+	this.So(spec.assertable(nil, nil), ShouldBeFalse)
 }
 
 func (this *EqualityFixture) TestEligible1() {
 	a := Eligible1{"hi"}
 	b := Eligible1{"hi"}
-	specification := newEqualityMethodSpecification(a, b)
-	this.So(specification.IsSatisfied(), ShouldBeTrue)
-	this.So(specification.AreEqual(), ShouldBeTrue)
+	specification := equalityMethodSpecification{}
+	this.So(specification.assertable(a, b), ShouldBeTrue)
+	this.So(specification.passes(a, b), ShouldBeTrue)
 }
 
 func (this *EqualityFixture) TestAreEqual() {
 	a := Eligible1{"hi"}
 	b := Eligible1{"hi"}
-	specification := newEqualityMethodSpecification(a, b)
-	this.So(specification.IsSatisfied(), ShouldBeTrue)
-	this.So(specification.AreEqual(), ShouldBeTrue)
+	specification := equalityMethodSpecification{}
+	this.So(specification.assertable(a, b), ShouldBeTrue)
+	this.So(specification.passes(a, b), ShouldBeTrue)
 }
 
 func (this *EqualityFixture) TestAreNotEqual() {
 	a := Eligible1{"hi"}
 	b := Eligible1{"bye"}
-	specification := newEqualityMethodSpecification(a, b)
-	this.So(specification.IsSatisfied(), ShouldBeTrue)
-	this.So(specification.AreEqual(), ShouldBeFalse)
+	specification := equalityMethodSpecification{}
+	this.So(specification.assertable(a, b), ShouldBeTrue)
+	this.So(specification.passes(a, b), ShouldBeFalse)
 }
 
 func (this *EqualityFixture) TestEligible2() {
 	a := Eligible2{"hi"}
 	b := Eligible2{"hi"}
-	specification := newEqualityMethodSpecification(a, b)
-	this.So(specification.IsSatisfied(), ShouldBeTrue)
+	specification := equalityMethodSpecification{}
+	this.So(specification.assertable(a, b), ShouldBeTrue)
 }
 
 func (this *EqualityFixture) TestEligible1_PointerReceiver() {
 	a := &Eligible1{"hi"}
 	b := Eligible1{"hi"}
 	this.So(a.Equal(b), ShouldBeTrue)
-	specification := newEqualityMethodSpecification(a, b)
-	this.So(specification.IsSatisfied(), ShouldBeTrue)
+	specification := equalityMethodSpecification{}
+	this.So(specification.assertable(a, b), ShouldBeTrue)
 }
 
 func (this *EqualityFixture) TestIneligible_PrimitiveTypes() {
-	specification := newEqualityMethodSpecification(1, 1)
-	this.So(specification.IsSatisfied(), ShouldBeFalse)
+	specification := equalityMethodSpecification{}
+	this.So(specification.assertable(1, 1), ShouldBeFalse)
 }
 
 func (this *EqualityFixture) TestIneligible_DisparateTypes() {
 	a := Eligible1{"hi"}
 	b := Eligible2{"hi"}
-	specification := newEqualityMethodSpecification(a, b)
-	this.So(specification.IsSatisfied(), ShouldBeFalse)
+	specification := equalityMethodSpecification{}
+	this.So(specification.assertable(a, b), ShouldBeFalse)
 }
 
 func (this *EqualityFixture) TestIneligible_NoEqualMethod() {
 	a := Ineligible_NoEqualMethod{}
 	b := Ineligible_NoEqualMethod{}
-	specification := newEqualityMethodSpecification(a, b)
-	this.So(specification.IsSatisfied(), ShouldBeFalse)
+	specification := equalityMethodSpecification{}
+	this.So(specification.assertable(a, b), ShouldBeFalse)
 }
 
 func (this *EqualityFixture) TestIneligible_EqualMethodReceivesNoInput() {
 	a := Ineligible_EqualMethodNoInputs{}
 	b := Ineligible_EqualMethodNoInputs{}
-	specification := newEqualityMethodSpecification(a, b)
-	this.So(specification.IsSatisfied(), ShouldBeFalse)
+	specification := equalityMethodSpecification{}
+	this.So(specification.assertable(a, b), ShouldBeFalse)
 }
 
 func (this *EqualityFixture) TestIneligible_EqualMethodReceivesTooManyInputs() {
 	a := Ineligible_EqualMethodTooManyInputs{}
 	b := Ineligible_EqualMethodTooManyInputs{}
-	specification := newEqualityMethodSpecification(a, b)
-	this.So(specification.IsSatisfied(), ShouldBeFalse)
+	specification := equalityMethodSpecification{}
+	this.So(specification.assertable(a, b), ShouldBeFalse)
 }
 
 func (this *EqualityFixture) TestIneligible_EqualMethodReceivesWrongInput() {
 	a := Ineligible_EqualMethodWrongInput{}
 	b := Ineligible_EqualMethodWrongInput{}
-	specification := newEqualityMethodSpecification(a, b)
-	this.So(specification.IsSatisfied(), ShouldBeFalse)
+	specification := equalityMethodSpecification{}
+	this.So(specification.assertable(a, b), ShouldBeFalse)
 }
 
 func (this *EqualityFixture) TestIneligible_EqualMethodReturnsNoOutputs() {
 	a := Ineligible_EqualMethodNoOutputs{}
 	b := Ineligible_EqualMethodNoOutputs{}
-	specification := newEqualityMethodSpecification(a, b)
-	this.So(specification.IsSatisfied(), ShouldBeFalse)
+	specification := equalityMethodSpecification{}
+	this.So(specification.assertable(a, b), ShouldBeFalse)
 }
 
 func (this *EqualityFixture) TestIneligible_EqualMethodReturnsTooManyOutputs() {
 	a := Ineligible_EqualMethodTooManyOutputs{}
 	b := Ineligible_EqualMethodTooManyOutputs{}
-	specification := newEqualityMethodSpecification(a, b)
-	this.So(specification.IsSatisfied(), ShouldBeFalse)
+	specification := equalityMethodSpecification{}
+	this.So(specification.assertable(a, b), ShouldBeFalse)
 }
 
 func (this *EqualityFixture) TestIneligible_EqualMethodReturnsWrongOutputs() {
 	a := Ineligible_EqualMethodWrongOutput{}
 	b := Ineligible_EqualMethodWrongOutput{}
-	specification := newEqualityMethodSpecification(a, b)
-	this.So(specification.IsSatisfied(), ShouldBeFalse)
+	specification := equalityMethodSpecification{}
+	this.So(specification.assertable(a, b), ShouldBeFalse)
 }
 
 func (this *EqualityFixture) TestEligibleAsymmetric_EqualMethodResultDiffersWhenArgumentsInverted() {
 	a := EligibleAsymmetric{a: 0}
 	b := EligibleAsymmetric{a: 1}
-	specification := newEqualityMethodSpecification(a, b)
-	this.So(specification.IsSatisfied(), ShouldBeTrue)
-	this.So(specification.AreEqual(), ShouldBeFalse)
+	specification := equalityMethodSpecification{}
+	this.So(specification.assertable(a, b), ShouldBeTrue)
+	this.So(specification.passes(a, b), ShouldBeFalse)
 }
 
 /**************************************************************************/

@@ -103,6 +103,6 @@ func (this *AssertionsFixture) TestShouldEqualTrimSpace() {
 	this.fail(so(" asdf ", ShouldEqualTrimSpace), "This assertion requires exactly 1 comparison values (you provided 0).")
 	this.fail(so(1, ShouldEqualTrimSpace, 2), "Both arguments to this assertion must be strings (you provided int and int).")
 
-	this.fail(so("asdf", ShouldEqualTrimSpace, "qwer"), "qwer|asdf|Expected: 'qwer' Actual: 'asdf' (Should be equal)")
+	this.fail(so("asdf", ShouldEqualTrimSpace, "qwer"), `qwer|asdf|Expected: "qwer" Actual: "asdf" (Should equal)!`)
 	this.pass(so(" asdf\t\n", ShouldEqualTrimSpace, "asdf"))
 }
