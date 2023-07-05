@@ -38,6 +38,11 @@ func (this *AssertionsFixture) fail(actual string, expected string) {
 	actual = format(actual)
 	expected = format(expected)
 
+	if expected == "[no-check]" && actual == "" {
+		this.Errorf("Expected fail, but assertion passed.")
+	} else if expected == "[no-check]" {
+		return
+	}
 	if actual != expected {
 		if actual == "" {
 			actual = "(empty)"

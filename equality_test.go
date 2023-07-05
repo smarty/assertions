@@ -34,6 +34,11 @@ func (this *AssertionsFixture) TestShouldEqual() {
 	this.pass(so(ThingWithEqualMethod{"hi"}, ShouldEqual, ThingWithEqualMethod{"hi"}))
 	this.fail(so(ThingWithEqualMethod{"hi"}, ShouldEqual, ThingWithEqualMethod{"bye"}),
 		`{bye}|{hi}|Expected: assertions.ThingWithEqualMethod{a:"bye"} Actual: assertions.ThingWithEqualMethod{a:"hi"} (Should equal)! Diff: 'assertions.ThingWithEqualMethod{a:"byehi"}'`)
+
+	a := func() {}
+	b := a
+	this.pass(so(a, ShouldEqual, b))
+	this.fail(so(a, ShouldEqual, func() {}), "[no-check]")
 }
 
 func (this *AssertionsFixture) TestTimeEqual() {
