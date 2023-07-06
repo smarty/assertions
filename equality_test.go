@@ -41,8 +41,28 @@ func (this *AssertionsFixture) TestShouldEqual_Issue53() {
 	this.pass(so(a, ShouldEqual, b))
 	this.fail(so(a, ShouldEqual, func() {}), "[no-check]")
 }
+func (this *AssertionsFixture) TestShouldEqual_Issue22_GoConveyIssue437() {
+	// https://github.com/smartystreets/goconvey/issues/437#issue-166724312
+	type A struct {
+		UID      string
+		CID      string
+		Metadata map[string]any
+	}
+	this.pass(so(
+		A{UID: "joe", CID: "cid", Metadata: map[string]any{"key": "value string", "key int": 3, "key array": []any{2, "blabla"}}}, ShouldEqual,
+		A{UID: "joe", CID: "cid", Metadata: map[string]any{"key": "value string", "key int": 3, "key array": []any{2, "blabla"}}}))
 
-func (this *AssertionsFixture) TestTimeEqual() {
+	// https://github.com/smartystreets/goconvey/issues/437#issuecomment-258787465
+	this.pass(so(
+		map[string]any{"basecost": 12000, "basemin": 60, "initialcost": 0, "initialmin": 0, "overtimecost": 0, "overtimemin": 0}, ShouldEqual,
+		map[string]any{"basecost": 12000, "basemin": 60, "initialcost": 0, "initialmin": 0, "overtimecost": 0, "overtimemin": 0}))
+
+	// https://github.com/smartystreets/goconvey/issues/437#issuecomment-263060222
+	this.pass(so(
+		map[string]any{"fields": []string{}, "limit": 25, "offset": 0}, ShouldEqual,
+		map[string]any{"fields": []string{}, "limit": 25, "offset": 0}))
+}
+func (this *AssertionsFixture) TestShouldEqual_TimeValues() {
 	var (
 		gopherCon, _ = time.LoadLocation("America/Denver")
 		elsewhere, _ = time.LoadLocation("America/New_York")
