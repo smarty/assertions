@@ -110,6 +110,7 @@ func (this *AssertionsFixture) TestShouldBeEmpty() {
 	go func() { c <- 1 }()
 	time.Sleep(time.Millisecond)
 	this.fail(so(c, ShouldBeEmpty), fmt.Sprintf("Expected %+v to be empty (but it wasn't)!", c))
+	this.fail(so(1, ShouldBeEmpty), "Expected value's kind to be slice, chan, map, or string (you provided int)!")
 }
 
 func (this *AssertionsFixture) TestShouldNotBeEmpty() {

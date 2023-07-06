@@ -51,8 +51,9 @@ const (
 	shouldHaveBeenIn    = "Expected '%v' to be in the container (%v), but it wasn't!"
 	shouldNotHaveBeenIn = "Expected '%v' NOT to be in the container (%v), but it was!"
 
-	shouldHaveBeenEmpty    = "Expected %+v to be empty (but it wasn't)!"
-	shouldNotHaveBeenEmpty = "Expected %+v to NOT be empty (but it was)!"
+	shouldHaveBeenEmpty          = "Expected %+v to be empty (but it wasn't)!"
+	shouldNotHaveBeenEmpty       = "Expected %+v to NOT be empty (but it was)!"
+	shouldHaveBeenEmptyWrongKind = "Expected value's kind to be slice, chan, map, or string (you provided %s)!"
 
 	shouldHaveBeenAValidInteger = "You must provide a valid integer (was %v)!"
 	shouldHaveBeenAValidLength  = "You must provide a valid positive integer (was %v)!"
