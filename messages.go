@@ -1,17 +1,12 @@
 package assertions
 
 const (
-	shouldHaveBeenEqual              = "Expected: '%v'\nActual:   '%v'\n(Should be equal)"
-	shouldHaveBeenEqualNoResemblance = "Both the actual and expected values render equally ('%s') and their types are the same. Try using ShouldResemble instead."
-	shouldNotHaveBeenEqual           = "Expected     '%v'\nto NOT equal '%v'\n(but it did)!"
-	shouldHaveBeenEqualTypeMismatch  = "Expected: '%v' (%T)\nActual:   '%v' (%T)\n(Should be equal, type mismatch)"
-
 	shouldHaveBeenAlmostEqual    = "Expected '%v' to almost equal '%v' (but it didn't)!"
 	shouldHaveNotBeenAlmostEqual = "Expected '%v' to NOT almost equal '%v' (but it did)!"
 
-	shouldHaveResembled            = "Expected: %s\nActual:   %s\n(Should equal)!"
-	shouldHaveResembledButTypeDiff = "Expected: %s\nActual:   %s\n(Should equal, but there is a type difference within the two)!"
-	shouldNotHaveResembled         = "Expected        '%#v'\nto NOT resemble '%#v'\n(but it did)!"
+	shouldHaveBeenEqual            = "Expected: %s\nActual:   %s\n(Should equal)!"
+	shouldHaveBeenEqualButTypeDiff = "Expected: %s\nActual:   %s\n(Should equal, but there is a type difference within the two)!"
+	shouldNotHaveBeenEqual         = "Expected     '%v'\nto NOT equal '%v'\n(but it did)!"
 
 	shouldBePointers            = "Both arguments should be pointers "
 	shouldHaveBeenNonNilPointer = shouldBePointers + "(the %s was %s)!"
