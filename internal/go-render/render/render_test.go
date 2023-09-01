@@ -263,7 +263,7 @@ func TestMapSortRendering(t *testing.T) {
 		},
 		{
 			map[any]struct{}{1: {}, 2: {}, 3: {}, "foo": {}},
-			`map[any]struct {}{1:{}, 2:{}, 3:{}, "foo":{}}`,
+			`map[any]struct {}{"foo":{}, 1:{}, 2:{}, 3:{}}`,
 		},
 		{
 			map[complex64]struct{}{1 + 2i: {}, 2 + 1i: {}, 3 + 1i: {}, 1 + 3i: {}},
