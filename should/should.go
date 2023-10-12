@@ -4,6 +4,17 @@ package should
 
 import "github.com/smarty/assertions"
 
+type testingT interface {
+	Error(args ...any)
+}
+
+// So is a variation on other such functions/methods in the assertions package.
+// Since it's defined alongside all these assertion definitions it allows
+// performing assertions in tests with a single import of this package.
+func So(t testingT, actual any, assertion assertions.SoFunc, expected ...any) bool {
+	return assertions.New(t).So(actual, assertion, expected...)
+}
+
 var (
 	AlmostEqual            = assertions.ShouldAlmostEqual
 	BeBetween              = assertions.ShouldBeBetween
