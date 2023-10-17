@@ -59,16 +59,15 @@ func (this *Assertion) Failed() bool {
 	return this.failed
 }
 
-const FatalPrefix = "<<FATAL>>"
-
 // So calls the standalone So function and additionally, calls t.Error in failure scenarios.
 func (this *Assertion) So(actual any, assert SoFunc, expected ...any) bool {
 	ok, result := So(actual, assert, expected...)
 	if !ok {
+		const fatalPrefix = "<<FATAL>>"
 		this.failed = true
 		_, file, line, _ := runtime.Caller(1)
 		report := fmt.Sprintf("\n%s:%d\n%s", file, line, result)
-		if strings.HasPrefix(result, FatalPrefix) {
+		if strings.HasPrefix(result, fatalPrefix) {
 			this.t.Fatal(report)
 		} else {
 			this.t.Error(report)
