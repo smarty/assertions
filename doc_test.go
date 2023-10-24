@@ -49,6 +49,23 @@ func TestFailingAssertion(t *testing.T) {
 	}
 }
 
+func TestFatalAssertion(t *testing.T) {
+	fake := &FakeT{buffer: new(bytes.Buffer)}
+	assertion := New(fake)
+	passed := assertion.So(1, MustEqual, 2)
+
+	if passed {
+		t.Error("Assertion passed when it should have failed.")
+	}
+	if !fake.fatal {
+		t.Error("Expected assertion to fail fatally.")
+	}
+}
+
+func MustEqual(actual any, expected ...any) string {
+	return "<<FATAL>>"
+}
+
 func TestFailingGroupsOfAssertions(t *testing.T) {
 	fake := &FakeT{buffer: new(bytes.Buffer)}
 	assertion1 := New(fake)
@@ -67,8 +84,14 @@ func TestFailingGroupsOfAssertions(t *testing.T) {
 
 type FakeT struct {
 	buffer *bytes.Buffer
+	fatal  bool
 }
 
 func (this *FakeT) Error(args ...any) {
-	fmt.Fprint(this.buffer, args...)
+	_, _ = fmt.Fprint(this.buffer, args...)
+}
+
+func (this *FakeT) Fatal(args ...any) {
+	_, _ = fmt.Fprint(this.buffer, args...)
+	this.fatal = true
 }
