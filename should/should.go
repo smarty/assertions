@@ -69,3 +69,20 @@ var (
 	StartWith              = assertions.ShouldStartWith
 	Wrap                   = assertions.ShouldWrap
 )
+
+// So is a variation on other such functions/methods in this module.
+// Since it is defined alongside all these assertion definitions it allows
+// performing assertions in tests with a single import of this package.
+// Example:
+// should.So(t, 1, should.Equal, 1)
+func So(t testingT, actual any, assertion assertions.SoFunc, expected ...any) {
+	if ok, result := assertions.So(actual, assertion, expected...); !ok {
+		t.Helper()
+		t.Errorf("\n%s", result)
+	}
+}
+
+type testingT interface {
+	Helper()
+	Errorf(string, ...any)
+}
