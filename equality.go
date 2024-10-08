@@ -264,7 +264,7 @@ func interfaceHasNilValue(actual any) bool {
 func ShouldNotBeNil(actual any, expected ...any) string {
 	if fail := need(0, expected); fail != success {
 		return fail
-	} else if ShouldBeNil(actual) == success {
+	} else if actual == nil || interfaceHasNilValue(actual) {
 		return fmt.Sprintf(shouldNotHaveBeenNil, actual)
 	}
 	return success
