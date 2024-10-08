@@ -23,15 +23,10 @@ func ShouldEqual(actual any, expected ...any) string {
 	return shouldEqual(actual, expected[0])
 }
 func shouldEqual(actual, expected any) string {
-	for _, spec := range equalitySpecs {
-		if !spec.assertable(actual, expected) {
-			continue
-		}
-		if spec.passes(actual, expected) {
-			return success
-		}
-		break
+	if passesEqualitySpecs(actual, expected) {
+		return success
 	}
+
 	renderedExpected, renderedActual := render.Render(expected), render.Render(actual)
 	if renderedActual == renderedExpected {
 		message := fmt.Sprintf(shouldHaveBeenEqualButTypeDiff, renderedExpected, renderedActual)
@@ -42,14 +37,32 @@ func shouldEqual(actual, expected any) string {
 	return serializer.serializeDetailed(expected, actual, message)
 }
 
+// Helper function to check if the actual and expected values pass the equality specs
+func passesEqualitySpecs(actual, expected any) bool {
+	for _, spec := range equalitySpecs {
+		if !spec.assertable(actual, expected) {
+			continue
+		}
+		if spec.passes(actual, expected) {
+			return true
+		}
+		break
+	}
+
+	return false
+}
+
 // ShouldNotEqual receives exactly two parameters and does an inequality check.
-// See ShouldEqual for details on how equality is determined.
+// See passesEqualitySpecs for details on how equality is determined.
 func ShouldNotEqual(actual any, expected ...any) string {
-	if fail := need(1, expected); fail != success {
-		return fail
-	} else if ShouldEqual(actual, expected[0]) == success {
+	if message := need(1, expected); message != success {
+		return message
+	}
+
+	if passesEqualitySpecs(actual, expected[0]) {
 		return fmt.Sprintf(shouldNotHaveBeenEqual, actual, expected[0])
 	}
+
 	return success
 }
 
