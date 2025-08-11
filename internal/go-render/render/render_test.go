@@ -184,7 +184,7 @@ func TestRenderImplicitType(t *testing.T) {
 	}
 }
 
-func ExampleInReadme() {
+func Example() {
 	type customType int
 	type testStruct struct {
 		S string
