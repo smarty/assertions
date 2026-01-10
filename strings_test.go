@@ -106,3 +106,29 @@ func (this *AssertionsFixture) TestShouldEqualTrimSpace() {
 	this.fail(so("asdf", ShouldEqualTrimSpace, "qwer"), `qwer|asdf|Expected: "qwer" Actual: "asdf" (Should equal)!`)
 	this.pass(so(" asdf\t\n", ShouldEqualTrimSpace, "asdf"))
 }
+
+func (this *AssertionsFixture) TestShouldMatchRegex() {
+	this.fail(so(" asdf ", ShouldMatchRegex), "This assertion requires exactly 1 comparison values (you provided 0).")
+	this.fail(so(1, ShouldMatchRegex, 2), "Both arguments to this assertion must be strings (you provided int and int).")
+
+	// 有效的正则表达式匹配测试
+	this.pass(so("hello world", ShouldMatchRegex, "hello.*"))
+	this.pass(so("test123", ShouldMatchRegex, "[a-z]+[0-9]+"))
+	this.pass(so("email@example.com", ShouldMatchRegex, "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"))
+	this.pass(so("2023-10-09", ShouldMatchRegex, "^\\d{4}-\\d{2}-\\d{2}$"))
+
+	// 无效的正则表达式匹配测试
+	this.fail(so("hello world", ShouldMatchRegex, "goodbye.*"), "failed to match observed 'hello world' against expected pattern 'goodbye.*'")
+	this.fail(so("test", ShouldMatchRegex, "[0-9]+"), "failed to match observed 'test' against expected pattern '[0-9]+'")
+	this.fail(so("invalid email", ShouldMatchRegex, "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"), "failed to match observed 'invalid email' against expected pattern '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'")
+
+	// 空字符串和边界情况测试
+	this.pass(so("", ShouldMatchRegex, ""))
+	this.pass(so("abc", ShouldMatchRegex, "abc"))
+	this.fail(so("", ShouldMatchRegex, "x"), "failed to match observed '' against expected pattern 'x'")
+
+	// 特殊字符和转义测试
+	this.pass(so("a.b", ShouldMatchRegex, "a\\.b"))
+	this.pass(so("a+b", ShouldMatchRegex, "a\\+b"))
+	this.pass(so("a*b", ShouldMatchRegex, "a.*b"))
+}

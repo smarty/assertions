@@ -3,6 +3,7 @@ package assertions
 import (
 	"fmt"
 	"reflect"
+	"regexp"
 	"strings"
 )
 
@@ -224,4 +225,27 @@ func ShouldEqualTrimSpace(actual any, expected ...any) string {
 
 	actualString = strings.TrimSpace(actualString)
 	return ShouldEqual(actualString, expected[0])
+}
+
+// ShouldMatchRegex receives exactly 2 string parameters and ensures that the actual string matches
+// the given regular expression pattern.
+func ShouldMatchRegex(actual interface{}, expected ...interface{}) string {
+	if fail := need(1, expected); fail != success {
+		return fail
+	}
+
+	obs, valueIsString := actual.(string)
+	pattern, expecIsString := expected[0].(string)
+
+	if !valueIsString || !expecIsString {
+		return fmt.Sprintf(shouldBothBeStrings, reflect.TypeOf(actual), reflect.TypeOf(expected[0]))
+	}
+	matched, err := regexp.MatchString(pattern, obs)
+	if err != nil {
+		return fmt.Sprintf("error from regex.MatchString: '%v' in trying to match observed '%s' against expected pattern '%s'", err, obs, pattern)
+	}
+	if !matched {
+		return fmt.Sprintf("failed to match observed '%s' against expected pattern '%s'", obs, pattern)
+	}
+	return ""
 }
