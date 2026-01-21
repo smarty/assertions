@@ -16,6 +16,7 @@ package assertions
 import (
 	"fmt"
 	"runtime"
+	"strings"
 )
 
 // By default, we use a no-op serializer. The actual Serializer provides a JSON
@@ -39,6 +40,7 @@ func GoConveyMode(yes bool) {
 
 type testingT interface {
 	Error(args ...any)
+	Fatal(args ...any)
 }
 
 type Assertion struct {
@@ -61,9 +63,15 @@ func (this *Assertion) Failed() bool {
 func (this *Assertion) So(actual any, assert SoFunc, expected ...any) bool {
 	ok, result := So(actual, assert, expected...)
 	if !ok {
+		const fatalPrefix = "<<FATAL>>"
 		this.failed = true
 		_, file, line, _ := runtime.Caller(1)
-		this.t.Error(fmt.Sprintf("\n%s:%d\n%s", file, line, result))
+		report := fmt.Sprintf("\n%s:%d\n%s", file, line, result)
+		if strings.HasPrefix(result, fatalPrefix) {
+			this.t.Fatal(report)
+		} else {
+			this.t.Error(report)
+		}
 	}
 	return ok
 }
